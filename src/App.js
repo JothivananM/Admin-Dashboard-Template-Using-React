@@ -18,16 +18,22 @@ import Calendar from "./scenes/calendar/calendar";
 
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [isSidebar, setIsSidebar] = useState(false); 
+  const [isOpenSidebar, setIsOpenSidebar] = useState('');
+
+  const toggleSidebar = (props) => {
+    // console.log("Add",props);
+    setIsSidebar(props);
+  }
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
+          <Sidebar isSidebar={isSidebar} isOpen={isSidebar}/>
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
+            <Topbar setIsSidebar={toggleSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/team" element={<Team />} />

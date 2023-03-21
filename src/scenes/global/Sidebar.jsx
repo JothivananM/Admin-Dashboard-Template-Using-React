@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -35,11 +35,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [selected, setSelected] = useState("Dashboard");
+ 
 
   return (
     <Box
@@ -61,7 +62,7 @@ const Sidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar collapsed={isCollapsed} breakPoint={props.isOpen ? "xxl" : ""}>
         <Menu iconShape="square">
           {/* LOGO AND MENU ICON */}
           <MenuItem
