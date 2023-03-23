@@ -34,3 +34,8 @@ body,
   background: #555;
 }
 
+
+.customMuiTable {
+  position: relative;
+  z-index: 2;
+}

@@ -1,4 +1,14 @@
 import { tokens } from "../theme";
+import axios from "axios";
+
+export const sampleData = axios.get('https://jsonplaceholder.typicode.com/comments')
+  .then(response => {
+    return response;
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  
 
 export const mockDataTeam = [
   {
@@ -79,7 +89,7 @@ export const mockDataContacts = [
   {
     id: 1,
     name: "Jon Snow",
-    email: "jonsnow@gmail.com",
+    email: "jonsnow@gmail.com", 
     age: 35,
     phone: "(665)121-5454",
     address: "0912 Won Street, Alabama, SY 10001",

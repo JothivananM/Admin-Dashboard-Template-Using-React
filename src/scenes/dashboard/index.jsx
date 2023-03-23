@@ -7,16 +7,16 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
+// import LineChart from "../../components/LineChart";
+// import GeographyChart from "../../components/GeographyChart";
+// import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 
 const Dashboard = () => {
-  const theme = useTheme();
+  const theme = useTheme(); 
   const colors = tokens(theme.palette.mode);
-
+ 
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -31,6 +31,7 @@ const Dashboard = () => {
               fontSize: "14px",
               fontWeight: "bold",
               padding: "10px 20px",
+              zIndex:-1
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
@@ -47,7 +48,7 @@ const Dashboard = () => {
         gap="20px"
       >
         {/* ROW 1 */}
-        <Box
+        {/* <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[400]}
           display="flex"
@@ -122,7 +123,7 @@ const Dashboard = () => {
               />
             }
           />
-        </Box>
+        </Box> */}
 
         {/* ROW 2 */}
         <Box
@@ -162,7 +163,7 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
+            {/* <LineChart isDashboard={true} /> */}
           </Box>
         </Box>
         <Box
@@ -256,7 +257,7 @@ const Dashboard = () => {
             Sales Quantity
           </Typography>
           <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
+            {/* <BarChart isDashboard={true} /> */}
           </Box>
         </Box>
         <Box
@@ -273,7 +274,7 @@ const Dashboard = () => {
             Geography Based Traffic
           </Typography>
           <Box height="200px">
-            <GeographyChart isDashboard={true} />
+            {/* <GeographyChart isDashboard={true} /> */}
           </Box>
         </Box>
       </Box>
