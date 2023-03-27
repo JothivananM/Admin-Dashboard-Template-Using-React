@@ -27,7 +27,7 @@ const Topbar = (props) => {
 
   return (
     <div style={{ "position": "sticky", "top": 0, "zIndex": "99999" }}>
-      <Box display="flex" justifyContent="space-between" p={2} backgroundColor={colors.blueAccent[800]}>
+      <Box display="flex" justifyContent="space-between" p={2} backgroundColor={colors.greenAccent[900]}>
         {/* SEARCH BAR */}
         <Box
           display="flex"
@@ -52,13 +52,13 @@ const Topbar = (props) => {
 
         {/* ICONS */}
         <Box display="flex">
-          <IconButton onClick={colorMode.toggleColorMode}>
+          {/* <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlinedIcon />
             ) : (
               <LightModeOutlinedIcon />
             )}
-          </IconButton>
+          </IconButton> */}
           <IconButton>
             <NotificationsOutlinedIcon />
           </IconButton>
