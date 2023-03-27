@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { tokens } from "../../theme";
+import { useTheme } from "@mui/material";
+
 import {
   Button,
   Dialog,
@@ -54,6 +57,8 @@ const columns = [
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
 const AssetRequestList = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newBrand, setNewBrand] = useState("");
@@ -96,7 +101,46 @@ const AssetRequestList = () => {
           >
             Add new Request
           </Button>
-          <DataGrid rows={rows} columns={columns} />
+
+          <Box className="customMuiTable"
+            m="10px 0 10px 0"
+            height="75vh"
+            sx={{
+              "& .MuiDataGrid-root": {
+                "position": "relative",
+                "zIndex": 2,
+                border: "none",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column--cell": {
+                color: colors.greenAccent[300],
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: colors.blueAccent[700],
+                borderBottom: "none",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: colors.primary[400],
+              },
+              "& .MuiDataGrid-footerContainer": {
+                borderTop: "none",
+                backgroundColor: colors.blueAccent[700],
+              },
+              "& .MuiCheckbox-root": {
+                color: `${colors.greenAccent[200]} !important`,
+              },
+              "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                color: `${colors.grey[100]} !important`,
+              },
+            }}
+          >
+            <div style={{ height: 580, width: '100%', position: 'sticky', top: 0 }}>
+              <DataGrid rows={rows} columns={columns} />
+            </div>
+          </Box>
+
 
           <Dialog open={openAddDialog} onClose={handleAddClose}>
             <DialogTitle>Add new Request</DialogTitle>

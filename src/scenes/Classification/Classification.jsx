@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from '@mui/material';
+import { tokens } from "../../theme";
+import { useTheme } from "@mui/material";
 
 import {
   Button,
@@ -31,9 +33,9 @@ const columns = [
 
       return (
         <>
-          <Button color="primary" 
-          style={{ color: "#6870fa" }}
-          size="small" onClick={handleEdit}>
+          <Button color="primary"
+            style={{ color: "#6870fa" }}
+            size="small" onClick={handleEdit}>
             <EditIcon />
           </Button>
 
@@ -46,6 +48,8 @@ const columns = [
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
 const Classification = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newBrand, setNewBrand] = useState("");
@@ -79,16 +83,54 @@ const Classification = () => {
   return (
     <>
       <Box m="20px">
-        <div style={{ height: 500}}>
+        <div style={{ height: 500 }}>
           <Button
             variant="contained"
             color="primary"
-            style={{ background: "#6870fa", marginBottom:"10px"}}
+            style={{ background: "#6870fa", marginBottom: "10px" }}
             onClick={handleAddClick}
           >
             Add new Classification
           </Button>
-          <DataGrid rows={rows} columns={columns} />
+
+          <Box className="customMuiTable"
+            m="10px 0 10px 0"
+            height="75vh"
+            sx={{
+              "& .MuiDataGrid-root": {
+                "position": "relative",
+                "zIndex": 2,
+                border: "none",
+              },
+              "& .MuiDataGrid-cell": {
+                borderBottom: "none",
+              },
+              "& .name-column--cell": {
+                color: colors.greenAccent[300],
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: colors.blueAccent[700],
+                borderBottom: "none",
+              },
+              "& .MuiDataGrid-virtualScroller": {
+                backgroundColor: colors.primary[400],
+              },
+              "& .MuiDataGrid-footerContainer": {
+                borderTop: "none",
+                backgroundColor: colors.blueAccent[700],
+              },
+              "& .MuiCheckbox-root": {
+                color: `${colors.greenAccent[200]} !important`,
+              },
+              "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                color: `${colors.grey[100]} !important`,
+              },
+            }}
+          >
+            <div style={{ height: 580, width: '100%', position: 'sticky', top: 0 }}>
+              <DataGrid rows={rows} columns={columns} />
+            </div>
+          </Box>
 
           <Dialog open={openAddDialog} onClose={handleAddClose}>
             <DialogTitle>Add new Classification</DialogTitle>
