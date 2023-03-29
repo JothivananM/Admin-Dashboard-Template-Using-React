@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box } from '@mui/material';
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, } from "@mui/x-data-grid";
+import { Box } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 
@@ -14,6 +14,11 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 // import classes from "./tabelui.module.css";
 
 const columns = [
@@ -30,15 +35,16 @@ const columns = [
         console.log(`Edit row ${params.row.id}`);
       };
 
-
       return (
         <>
-          <Button color="primary"
+          <Button
+            color="primary"
             style={{ color: "#6870fa" }}
-            size="small" onClick={handleEdit}>
+            size="small"
+            onClick={handleEdit}
+          >
             <EditIcon />
           </Button>
-
         </>
       );
     },
@@ -47,12 +53,25 @@ const columns = [
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
+const CustomToolbar = () => {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        {/* <GridToolbarExport /> */}
+      </GridToolbarContainer>
+    );
+  }
+
 const Classification = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newBrand, setNewBrand] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+
 
   useEffect(() => {
     const fetchRows = async () => {
@@ -93,13 +112,14 @@ const Classification = () => {
             Add new Classification
           </Button>
 
-          <Box className="customMuiTable"
+          <Box
+            className="customMuiTable"
             m="10px 0 10px 0"
             height="75vh"
             sx={{
               "& .MuiDataGrid-root": {
-                "position": "relative",
-                "zIndex": 2,
+                position: "relative",
+                zIndex: 2,
                 border: "none",
               },
               "& .MuiDataGrid-cell": {
@@ -127,21 +147,31 @@ const Classification = () => {
               },
             }}
           >
-            <div style={{ height: 580, width: '100%', position: 'sticky', top: 0 }}>
-              <DataGrid rows={rows} columns={columns} />
+            <div
+              style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
+            >
+              <DataGrid 
+              rows={rows} 
+              columns={columns}
+               componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
+                components={{ Toolbar: CustomToolbar }}
+                rowsPerPageOptions={[10, 20]}
+                pageSize={pageSize}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} />
             </div>
           </Box>
 
-          <Dialog open={openAddDialog} onClose={handleAddClose}>
-            <DialogTitle>Add new Classification</DialogTitle>
+          <Dialog open={openAddDialog} onClose={handleAddClose}     >
+            <DialogTitle><h2  style={{marginBottom:"-10px"}}>Add New Classification</h2></DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
                 margin="dense"
-                label="Id"
+                label="ID Auto Generated"
                 type="text"
                 placeholder="Auto Generated"
                 fullWidth
+                disabled
               />
               <TextField
                 autoFocus
@@ -152,19 +182,18 @@ const Classification = () => {
                 value={newBrand}
                 onChange={(e) => setNewBrand(e.target.value)}
               />
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Category"
-                type="text"
-                fullWidth
-
-
-              />
+              <FormControl fullWidth style={{ marginTop: "10px" }} >
+                <InputLabel>Category </InputLabel>
+                <Select label="Category" >
+                  {/* <MenuItem value="">Select Category</MenuItem> */}
+                  <MenuItem value="Assigned" >Assigned</MenuItem>
+                  <MenuItem value="Not Assigned">Not Assigned</MenuItem>
+                </Select>
+              </FormControl>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleAddClose}>Cancel</Button>
-              <Button onClick={handleAddSubmit}>Save</Button>
+              <Button onClick={handleAddSubmit} variant="contained">Save</Button>
             </DialogActions>
           </Dialog>
         </div>

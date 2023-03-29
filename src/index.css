@@ -8,6 +8,7 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
+  /* margin-left: 21px; */
 }
 
 .app {
@@ -38,4 +39,11 @@ body,
 .customMuiTable {
   position: relative;
   z-index: 2;
+}
+
+.outlet{
+  margin-left: 80px ;
+}
+.minoutlet{
+  margin-left: 0px ;
 }

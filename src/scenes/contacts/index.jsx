@@ -89,7 +89,6 @@ const Contacts = () => {
         sx={{
           "& .MuiDataGrid-root": {
             "position": "relative",
-            "zIndex": 2,
             border: "none",
           },
           "& .MuiDataGrid-cell": {

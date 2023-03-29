@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 
@@ -23,15 +23,22 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 const columns = [
-  { field: "AssetName", headerName: "Asset Name", width: 125 },
+  { field: "ID", headerName: "Request ID", width: 100 },
   {
-    field: "RequestDate",
-    headerName: "Request Date",
+    field: "Requestor",
+    headerName: "Requestor",
+    width: 100,
+  },
+  { field: "RequestDate", headerName: "Request Date", width: 100 },
+  { field: "AssetName", headerName: "Asset Name", width: 100 },
+  { field: "RequestType", headerName: "Request Type", width: 100 },
+  { field: "Reason", headerName: "Reason", width: 100 },
+  { field: "Status", headerName: "Status", width: 100 },
+  {
+    field: "AssetClassification",
+    headerName: "Asset Classification",
     width: 150,
   },
-  { field: "RequestType", headerName: "Request Type", width: 150 },
-  { field: "AssignedDate", headerName: "Assigned Date", width: 150 },
-  { field: "Description", headerName: "Description", width: 150 },
   {
     field: "actions",
     headerName: "Actions",
@@ -42,12 +49,16 @@ const columns = [
         console.log(`Edit row ${params.row.id}`);
       };
 
-
       return (
         <>
-          <Button color="primary" size="small" onClick={handleEdit}>
-            <EditIcon />
-          </Button>
+          <FormControl fullWidth  >
+           
+            <Select label="">
+              <MenuItem value="Accept">Accept</MenuItem>
+              <MenuItem value="Declain">Declain</MenuItem>
+              <MenuItem value="Fullfiled">Fullfilled</MenuItem>
+            </Select>
+          </FormControl>
         </>
       );
     },
@@ -56,12 +67,26 @@ const columns = [
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
+const CustomToolbar = () => {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      {/* <GridToolbarExport /> */}
+    </GridToolbarContainer>
+  );
+}
+
 const AssetRequestList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newBrand, setNewBrand] = useState("");
+  const [isShowing, setIsShowing] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
+
 
   useEffect(() => {
     const fetchRows = async () => {
@@ -88,6 +113,17 @@ const AssetRequestList = () => {
     setOpenAddDialog(false);
     setNewBrand("");
   };
+  const [selectedOption, setSelectedOption] = useState("");
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    if (event.target.value === "Service") {
+      setIsShowing(true);
+    } else if (event.target.value === "Exchange") {
+      setIsShowing(true);
+    } else {
+      setIsShowing(false);
+    }
+  };
 
   return (
     <>
@@ -95,20 +131,21 @@ const AssetRequestList = () => {
         <div style={{ height: 500 }}>
           <Button
             variant="contained"
-            color="primary"
-            style={{ background: "#6870fa", marginBottom: "10px" }}
+            color="secondary"
+            bold
             onClick={handleAddClick}
           >
-            Add new Request
+            Add New Request
           </Button>
 
-          <Box className="customMuiTable"
+          <Box
+            className="customMuiTable"
             m="10px 0 10px 0"
             height="75vh"
             sx={{
               "& .MuiDataGrid-root": {
-                "position": "relative",
-                "zIndex": 2,
+                position: "relative",
+                zIndex: 2,
                 border: "none",
               },
               "& .MuiDataGrid-cell": {
@@ -136,54 +173,86 @@ const AssetRequestList = () => {
               },
             }}
           >
-            <div style={{ height: 580, width: '100%', position: 'sticky', top: 0 }}>
-              <DataGrid rows={rows} columns={columns} />
+            <div
+              style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
+            >
+              <DataGrid 
+              rows={rows} 
+              columns={columns}
+              componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
+                components={{ Toolbar: CustomToolbar }}
+                rowsPerPageOptions={[10, 20]}
+                pageSize={pageSize}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} />
             </div>
           </Box>
 
-
           <Dialog open={openAddDialog} onClose={handleAddClose}>
-            <DialogTitle>Add new Request</DialogTitle>
+            <DialogTitle>
+              <h2 style={{ marginBottom: "-10px" }}>Add New Request</h2>
+            </DialogTitle>
             <DialogContent>
               <TextField
                 autoFocus
                 margin="dense"
                 label="Asset Name"
                 type="text"
-                placeholder="Auto Generated"
                 fullWidth
-                style={{ 'marginBottom': "10px" }}
+                style={{ marginBottom: "10px" }}
               />
 
-              <LocalizationProvider style={{ 'marginTop': "10px" }} dateAdapter={AdapterDayjs}>
-                <DatePicker label="Request Date" />
+              <LocalizationProvider
+                style={{ marginTop: "10px" }}
+                dateAdapter={AdapterDayjs}
+              >
+                <DatePicker
+                  label="Request Date"
+                  sx={{
+                    width: "100%",
+                  }}
+                />
               </LocalizationProvider>
 
-
-              <FormControl fullWidth style={{ 'marginTop': "10px" }}>
+              <FormControl fullWidth style={{ marginTop: "10px" }}>
                 <InputLabel>Request Type</InputLabel>
-                <Select label="Request Type">
+                <Select
+                  label="Request Type"
+                  value={selectedOption}
+                  onChange={handleOptionChange}
+                >
                   <MenuItem value="New">New</MenuItem>
                   <MenuItem value="Service">Service</MenuItem>
                   <MenuItem value="Exchange">Exchange</MenuItem>
                 </Select>
               </FormControl>
 
-              <FormControl fullWidth style={{ 'marginTop': "10px" }}>
+              {!isShowing && (
+                <FormControl fullWidth style={{ marginTop: "10px" }}>
                 <InputLabel>Classification </InputLabel>
                 <Select label="Classification"></Select>
               </FormControl>
-              <h4>(or)</h4>
-              <FormControl fullWidth >
+              )}
+
+              {isShowing && (
+                <FormControl fullWidth style={{ marginTop: "10px" }}>
                 <InputLabel>Asset Assigned </InputLabel>
                 <Select label="Asset ASsigned"></Select>
               </FormControl>
-              <TextField autoFocus label="Description" type="text" fullWidth style={{ 'marginTop': "10px" }} />
+              )}
+              <TextField
+                autoFocus
+                label="Description"
+                type="text"
+                fullWidth
+                style={{ marginTop: "10px" }}
+              />
             </DialogContent>
 
             <DialogActions>
-              <Button onClick={handleAddClose} >Cancel</Button>
-              <Button onClick={handleAddSubmit} variant="contained">Save</Button>
+              <Button onClick={handleAddClose}>Cancel</Button>
+              <Button onClick={handleAddSubmit} variant="contained">
+                Save
+              </Button>
             </DialogActions>
           </Dialog>
         </div>

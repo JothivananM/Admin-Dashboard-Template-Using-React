@@ -65,12 +65,12 @@ export const data = [
   ["Mouse", 20, 9,11],
   ["KeyBoard", 20, 9,11],
   ["HeadSet", 20, 9,11],
-  ["LaptopStand", 20, 9,11],
+  ["LaptopStand", 20, 9,11]
   
 ];
 
 export const options = {
-  title: "Total Assets",
+  title: "Total Assignable Assets",
   chartArea: { width: "50%" },
   hAxis: {
     title: "Asset Count",

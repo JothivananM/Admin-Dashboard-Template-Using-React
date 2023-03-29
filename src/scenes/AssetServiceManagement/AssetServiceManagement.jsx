@@ -1,60 +1,80 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import SaveCancelButtonUI from "./SaveCancelButtonUI";
-import CardContent from "@mui/material/CardContent";
-import Card from "@mui/material/Card";
-import classes from "./card.module.css";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Box } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { Button } from "@mui/material";
 
 export default function AssetServiceManagement() {
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   return (
-    <div>
+    <Box m="20px">
       <div>
-        <Card sx={{ minWidth: 300 }} className={classes.main}>
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Asset ID" fullWidth />
-          </CardContent>
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Asset Name" fullWidth />
-          </CardContent>
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Request ID" fullWidth />
-          </CardContent>
-          <CardContent className={classes.cardcontent}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Request Date" />
-            </LocalizationProvider>
-          </CardContent>
+        {/* <h1 style={{ color: "gray" }}>Asset Service Management</h1> */}
+        <Box
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+          sx={{
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            ml: 2,
+            mt: 2,
+            mr: 2,
+          }}
+        >
+          <TextField label="Asset ID" fullWidth sx={{ gridColumn: "span 2" }} />
 
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Service ID" fullWidth />
-          </CardContent>
+          <TextField label="Asset Name" fullWidth sx={{ gridColumn: "span 2" }} />
 
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Service Provider" fullWidth />
-          </CardContent>
+          <TextField label="Request ID" fullWidth sx={{ gridColumn: "span 2" }} />
 
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Complain Detail" fullWidth />
-          </CardContent>
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <DatePicker label="Request Date" sx={{ gridColumn: "span 2" }} />
+          </LocalizationProvider>
 
-          <CardContent className={classes.cardcontent}>
-            <TextField label="Service Completed detail" fullWidth />
-          </CardContent>
+          <TextField label="Service ID" fullWidth sx={{ gridColumn: "span 2" }} />
 
-          <CardContent className={classes.cardcontent}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Service Given Date" />
-            </LocalizationProvider>
-          </CardContent>
+          <TextField
+            label="Service Provider"
+            fullWidth
+            sx={{ gridColumn: "span 2" }}
+          />
 
-          <CardContent>
-            <SaveCancelButtonUI />
-          </CardContent>
-        </Card>
+          <TextField
+            label="Complain Detail"
+            fullWidth
+            sx={{ gridColumn: "span 4" }}
+          />
+
+          <TextField
+            label="Service Completed detail"
+            fullWidth
+            sx={{ gridColumn: "span 2" }}
+          />
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Service Given Date"
+              sx={{ gridColumn: "span 2" }}
+            />
+          </LocalizationProvider>
+        </Box>
+        <Box display="flex" justifyContent="end" mt="20px" mr="20px">
+          <Box display="flex" gap="15px">
+            <Button 
+            variant="contained" 
+            style={{ fontSize: "15px" }} 
+            color="secondary">
+              Save
+            </Button>
+            <Button 
+            style={{ fontSize: "15px" }}>
+            Cancel</Button>
+          </Box>
+        </Box>
       </div>
-    </div>
+    </Box>
   );
 }

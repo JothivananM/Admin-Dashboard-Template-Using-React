@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import { Link, NavLink } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -12,34 +12,56 @@ import BrandingWatermarkOutlinedIcon from '@mui/icons-material/BrandingWatermark
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
 import { GridViewOutlined, LiveHelpOutlined, SettingsSuggestOutlined } from "@mui/icons-material";
+// import classes from './Index1.module.css';
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+
+const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [isSelected,setIsSelected] = useState(true);
   return (
-    <MenuItem
-      active={selected === title}
-      style={{
-        color: colors.primary[500],
+      <MenuItem
+      active={isSelected}
+        style={{
+          color: colors.primary[500],
+        }}
+      onClick={() => {
+        setSelected(title);
+        setIsCollapsed(true);
       }}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
-      <NavLink to={to} />
-    </MenuItem>
+        icon={icon}
+      >
+        <Typography>{title}</Typography>
+        <NavLink to={to}  className={({ isActive }) =>{
+           return isActive ?  setIsSelected(true) 
+           : setIsSelected(false) 
+
+        }
+    }></NavLink>
+      </MenuItem>
   );
 };
 
 const Sidebar = (props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [selected, setSelected] = useState("");
+  const matches = useMediaQuery('(max-width:600px)');
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [selected, setSelected] = useState("Dashboard");
+  const [isSidebarOpen,setIsSidebarOpen] = useState(true);
 
+  const toggleCollapsed =() =>{
+    setIsCollapsed(!isCollapsed);
+   
+  }
+
+  const handleClick = () =>{
+    setIsCollapsed(true);
+  
+  }
 
   return (
-    <Box
+    <Box className="sidebarContainer"
       sx={{
         "& .pro-sidebar-inner": {
           background: `${colors.blueAccent[500]} !important`,
@@ -56,15 +78,21 @@ const Sidebar = (props) => {
         "& .pro-menu-item.active": {
           color: "#dbf5ee !important",
         },
+        "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul" :{
+          height:"100vh !important" 
+        }
       }}
     >
-      <div className="sidebarContainer">
+      <div >
         <ProSidebar
           // rtl="true"
           collapsed={isCollapsed}
-          breakPoint={props.isOpen ? "xxl" : ""}
+          breakPoint={props.isOpen ? "xxl" : "" }
+        
+          // closeOnClick ={true}
+          // rtl={true}
         >
-          <div style={{ position: "sticky", top: "0px" }}>
+          <div>
             <Menu iconShape="square" >
               {/* LOGO AND MENU ICON */}
               <MenuItem
@@ -120,15 +148,17 @@ const Sidebar = (props) => {
             )} */}
 
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-                <Tooltip title="Dashboard" placement="right">
-                  <Item
-                    title="Dashboard"
-                    to="/"
-                    icon={<HomeOutlinedIcon />}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                </Tooltip>
+                {/* <Tooltip title="Dashboard" placement="right"> */}
+                <Item
+                  
+                  title="Dashboard"
+                  to="/"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                    setIsCollapsed={setIsCollapsed}
+                />
+                {/* </Tooltip> */}
 
 
                 {/* <Typography
@@ -144,6 +174,8 @@ const Sidebar = (props) => {
                   icon={<BrandingWatermarkOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
                 <Item
                   title="Classification"
@@ -151,6 +183,8 @@ const Sidebar = (props) => {
                   icon={<AccountTreeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
                 <Item
                   title="Asset Management"
@@ -158,6 +192,8 @@ const Sidebar = (props) => {
                   icon={<RoomPreferencesOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
 
                 {/* <Typography
@@ -173,6 +209,8 @@ const Sidebar = (props) => {
                   icon={<LiveHelpOutlined />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
                 <Item
                   title="Service Mmanagement"
@@ -180,13 +218,17 @@ const Sidebar = (props) => {
                   icon={<SettingsSuggestOutlined />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
-                 <Item
+                <Item
                   title="User Dashboard"
                   to="/dashboard"
                   icon={<GridViewOutlined />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
                 <Item
                   title="Asset Request"
@@ -194,34 +236,14 @@ const Sidebar = (props) => {
                   icon={<LiveHelpOutlined />}
                   selected={selected}
                   setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
                 />
 
               </Box>
 
               {/* MENU ICON */}
-              <MenuItem
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-                style={{
-                  margin: "10px 0 20px 0",
-                  color: colors.grey[100],
-                }}
-              >
-                {!isCollapsed && (
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    ml="15px"
-                  >
-                    <Typography variant="h3" color={colors.grey[100]}>
-                    </Typography>
-                    <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
-                    </IconButton>
-                  </Box>
-                )}
-              </MenuItem>
+             
             </Menu>
           </div>
         </ProSidebar>
