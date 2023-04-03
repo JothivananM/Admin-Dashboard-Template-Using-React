@@ -1,4 +1,4 @@
-import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { useContext, useState} from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -30,18 +30,19 @@ const Topbar = (props) => {
   props.setIsSidebar(open);
 
   return (
-    <div style={{ "position": "sticky", "top": 0, "zIndex": "99999" }}>
-      <Box display="flex" justifyContent="space-between" p={2} backgroundColor={colors.greenAccent[900]}>
+    <div style={{ "position": "sticky", "top": 0, "zIndex": "3", background: "#ffffff" }}>
+      <Box display="flex" justifyContent="space-between" p={2} >
        { <Box
           display="flex"
           visibility="visible"
           borderRadius="3px"
+          onClick={toggleSidebar}
         >
           {toggleSidebarIcon && <IconButton sx={changeMargin}>
             {
               !isToggleClicked ?
-                <KeyboardDoubleArrowLeftIcon onClick={toggleSidebar} /> :
-                <KeyboardDoubleArrowRightIcon onClick={toggleSidebar} />
+                <KeyboardDoubleArrowLeftIcon /> :
+                <KeyboardDoubleArrowRightIcon />
             }
 
           </IconButton>}
@@ -61,14 +62,15 @@ const Topbar = (props) => {
           <IconButton>
             <NotificationsOutlinedIcon />
           </IconButton>
-          <IconButton>
+          {/* <IconButton>
             <SettingsOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton>
             <PersonOutlinedIcon />
           </IconButton>
         </Box>
       </Box>
+      <Divider />
     </div>
 
   );

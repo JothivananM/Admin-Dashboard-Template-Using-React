@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, createBrowserRouter, RouterProvider, Router } from "react-router-dom";
-// import Topbar from "./scenes/global/Topbar";
-// import Sidebar from "./scenes/global/Sidebar";
-// import Dashboard from "./scenes/dashboard";
-// import Team from "./scenes/team";
-// import Invoices from "./scenes/invoices";
-// import Contacts from "./scenes/contacts";
-// import Form from "./scenes/form";
-// import FAQ from "./scenes/faq";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
-import Calendar from "./scenes/calendar/calendar";
 import AdminDashboard from "./scenes/AdminDashboard/AdminDashboard";
 import RootLayout from "./Layout/RootLayout";
 import ErrorElement from "./ErrorElement";
@@ -23,6 +14,13 @@ import AssetRequestList from "./scenes/AssetRequestList/AssetRequestList";
 import SignIn from "./SignIn/SignIn.jsx";
 import UserDashboard from "./scenes/UserDashboard/UserDashboard";
 import AssetRequest from "./scenes/AssetUserRequest/AssetRequest";
+import { AssetHistoryNavigation } from "./scenes/AssetManagement/AssetNavigation/AssetHistoryNavigation";
+import { AssetRootLayout } from "./Layout/AssetRootLayout";
+import AssetMaintananceHistory from "./scenes/AssetManagement/AssetHistory/AssetMaintanence";
+import AssetAssignedHistory from "./scenes/AssetManagement/AssetHistory/AssetAssigned";
+import { UserDashboardNavigation } from "./scenes/UserDashboard/Navigation/UserDashboardNavigation";
+import { UserDashboardLayout } from "./Layout/UserDashboardLayout";
+import UserAssetAssignedHistory from "./scenes/UserDashboard/UserAssetAssignedHistory";
 
 const router = createBrowserRouter([
   {
@@ -43,8 +41,34 @@ const router = createBrowserRouter([
         element: <Classification />,
       },
       {
-        path: '/assetmanagement',
-        element: <AssetManagement />,
+        path: 'assetmanagement',
+        children: [
+          {
+            index: true,
+            element: <AssetManagement />
+          },
+          {
+            path: ':eventId',
+            id: 'asset-detail',
+            children: [
+              {
+                path: '',
+                element: <AssetRootLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <AssetMaintananceHistory />,
+                  },
+                  {
+                    path: 'assignedhistory',
+                    element: <AssetAssignedHistory />,
+                  }
+                ]
+              }
+
+            ]
+          }
+        ]
       },
       {
         path: '/requestlist',
@@ -56,7 +80,17 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard',
-        element: <UserDashboard />,
+        element: <UserDashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: <UserDashboard />
+          },
+          {
+           path: '/dashboard/assignedassethistory',
+            element: <UserAssetAssignedHistory />
+          }
+        ]
       },
       {
         path: '/request',
@@ -78,8 +112,9 @@ function App() {
     const storedUserAuthentication = localStorage.getItem('isLoggedIn');
     if (storedUserAuthentication) {
       setIsAuthenticated(true);
-    }}
-  ,[]);
+    }
+  }
+    , []);
 
   const toggleSidebar = (props) => {
     // console.log("Add",props);
@@ -101,20 +136,21 @@ function App() {
     <>
       {isAuthenticated ? (
         <ColorModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <div className="app">
-            <RouterProvider router={router} />
-          </div>
-        </ThemeProvider>
-      </ColorModeContext.Provider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <div className="app">
+              <RouterProvider router={router} />
+            </div>
+          </ThemeProvider>
+        </ColorModeContext.Provider>
       ) : (
-        <SignIn onLogin={handleLogin}/>
+        <SignIn onLogin={handleLogin} />
       )}
-      
+
     </>
 
   );
 }
 
 export default App;
+ 

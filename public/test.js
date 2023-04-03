@@ -1,77 +1,255 @@
-import { Box, IconButton, useMediaQuery, useTheme } from "@mui/material";
-import { useContext, useState} from "react";
-import { ColorModeContext, tokens } from "../../theme";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import { useState } from "react";
+import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Box, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
+import Tooltip from '@mui/material/Tooltip';
+import { Link, NavLink } from "react-router-dom";
+import "react-pro-sidebar/dist/css/styles.css";
+import "./index.css";
+import { tokens } from "../../theme";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import BrandingWatermarkOutlinedIcon from '@mui/icons-material/BrandingWatermarkOutlined';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
+import { BuildOutlined, GridViewOutlined, LiveHelpOutlined, SettingsSuggestOutlined } from "@mui/icons-material";
+// import classes from './Index1.module.css';
 
 
-const Topbar = (props) => {
+const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const colorMode = useContext(ColorModeContext);
-  const [open, setOpen] = useState(false);
-  const [isToggleClicked, setIsToggleClicked] = useState(false);
-  const toggleSidebarIcon = useMediaQuery('(max-width:600px)');
-
-
-  const toggleSidebar = () => {
-    setOpen(!open);
-    setIsToggleClicked(!isToggleClicked);
-
-  }
-
-  const changeMargin = isToggleClicked ? { ml: 0, flex: 1 } : { ml: 10, flex: 1 }
-
-  props.setIsSidebar(open);
-
+  const [isSelected,setIsSelected] = useState(true);
   return (
-    <div style={{ "position": "sticky", "top": 0, "zIndex": "99999" }}>
-      <Box display="flex" justifyContent="space-between" p={2} backgroundColor={colors.greenAccent[900]}>
-       { <Box
-          display="flex"
-          visibility="visible"
-          borderRadius="3px"
-        >
-          {toggleSidebarIcon && <IconButton sx={changeMargin}>
-            {
-              !isToggleClicked ?
-                <KeyboardDoubleArrowLeftIcon onClick={toggleSidebar} /> :
-                <KeyboardDoubleArrowRightIcon onClick={toggleSidebar} />
-            }
+      <MenuItem
+      active={isSelected}
+        style={{
+          color: colors.primary[500],
+        }}
+      onClick={() => {
+        setSelected(title);
+        setIsCollapsed(true);
+      }}
+        icon={icon}
+      >
+        <Typography>{title}</Typography>
+        <NavLink to={to}  className={({ isActive }) =>{
+           return isActive ?  setIsSelected(true) 
+           : setIsSelected(false) 
 
-          </IconButton>}
-         
-        </Box>}
-
-
-        {/* ICONS */}
-        <Box display="flex">
-          {/* <IconButton onClick={colorMode.toggleColorMode}>
-            {theme.palette.mode === "dark" ? (
-              <DarkModeOutlinedIcon />
-            ) : (
-              <LightModeOutlinedIcon />
-            )}
-          </IconButton> */}
-          <IconButton>
-            <NotificationsOutlinedIcon />
-          </IconButton>
-          <IconButton>
-            <SettingsOutlinedIcon />
-          </IconButton>
-          <IconButton>
-            <PersonOutlinedIcon />
-          </IconButton>
-        </Box>
-      </Box>
-    </div>
-
+        }
+    }></NavLink>
+      </MenuItem>
   );
 };
 
-export default Topbar;
+const Sidebar = (props) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [selected, setSelected] = useState("");
+  const matches = useMediaQuery('(max-width:600px)');
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isSidebarOpen,setIsSidebarOpen] = useState(true);
+
+  const toggleCollapsed =() =>{
+    setIsCollapsed(!isCollapsed);
+   
+  }
+
+  const handleClick = () =>{
+    setIsCollapsed(true);
+  
+  }
+
+  return (
+    <Box className="sidebarContainer"
+      sx={{
+        "& .pro-sidebar-inner": {
+          background: `${colors.blueAccent[500]} !important`,
+        },
+        "& .pro-icon-wrapper": {
+          backgroundColor: "transparent !important",
+        },
+        "& .pro-inner-item": {
+          padding: "5px 35px 5px 20px !important",
+        },
+        "& .pro-inner-item:hover": {
+          color: "#dbf5ee !important",
+        },
+        "& .pro-menu-item.active": {
+          color: "#dbf5ee !important",
+        },
+        "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul" :{
+          height:"100vh !important" 
+        }
+      }}
+    >
+      <div >
+        <ProSidebar
+          // rtl="true"
+          collapsed={isCollapsed}
+          breakPoint={props.isOpen ? "xxl" : "" }
+        
+          // closeOnClick ={true}
+          // rtl={true}
+        >
+          <div>
+            <Menu iconShape="square" >
+              {/* LOGO AND MENU ICON */}
+              <MenuItem
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+                style={{
+                  margin: "10px 0 20px 0",
+                  color: colors.grey[100],
+                }}
+              >
+                {!isCollapsed && (
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    ml="15px"
+                  >
+                    <Typography variant="h3" color={colors.grey[100]}>
+                      ADMIN
+                    </Typography>
+                    <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                      <MenuOutlinedIcon />
+                    </IconButton>
+                  </Box>
+                )}
+              </MenuItem>
+
+              {/* {!isCollapsed && (
+              <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="profile-user"
+                    width="100px"
+                    height="100px"
+                    src={`../../assets/user.png`}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                </Box>
+                <Box textAlign="center">
+                  <Typography
+                    variant="h2"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                    sx={{ m: "10px 0 0 0" }}
+                  >
+                    Ed Roh
+                  </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[500]}>
+                    VP Fancy Admin
+                  </Typography>
+                </Box>
+              </Box>
+            )} */}
+
+              <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+                {/* <Tooltip title="Dashboard" placement="right"> */}
+                <Item
+                  
+                  title="Dashboard"
+                  to="/"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                    setIsCollapsed={setIsCollapsed}
+                />
+                {/* </Tooltip> */}
+
+
+                {/* <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}
+              >
+                Data
+              </Typography> */}
+                <Item
+                  title="Brand"
+                  to="/brand"
+                  icon={<BrandingWatermarkOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+                <Item
+                  title="Classification"
+                  to="/classification"
+                  icon={<AccountTreeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+                <Item
+                  title="Asset Management"
+                  to="/assetmanagement"
+                  icon={<RoomPreferencesOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+
+                {/* <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}
+              >
+                Pages
+              </Typography> */}
+                <Item
+                  title="Asset Request List"
+                  to="/requestlist"
+                  icon={<LiveHelpOutlined />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+                <Item
+                  title="Service Mmanagement"
+                  to="/servicemanagement"
+                  icon={<BuildOutlined />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+                <Item
+                  title="User Dashboard"
+                  to="/dashboard"
+                  icon={<GridViewOutlined />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+                <Item
+                  title="Asset Request"
+                  to="/request"
+                  icon={<LiveHelpOutlined />}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setIsCollapsed={setIsCollapsed}
+
+                />
+
+              </Box>
+
+              {/* MENU ICON */}
+             
+            </Menu>
+          </div>
+        </ProSidebar>
+      </div>
+    </Box>
+  );
+};
+
+export default Sidebar;

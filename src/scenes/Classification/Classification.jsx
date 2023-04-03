@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, } from "@mui/x-data-grid";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 
@@ -18,38 +18,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { AddBoxOutlined } from "@mui/icons-material";
 
 // import classes from "./tabelui.module.css";
 
-const columns = [
-  { field: "id", headerName: "Classification ID", width: 140 },
-  { field: "classification", headerName: "Classification Name", width: 140 },
-  { field: "category", headerName: "Category", width: 140 },
-  {
-    field: "actions",
-    headerName: "Actions",
-    sortable: false,
-    width: 200,
-    renderCell: (params) => {
-      const handleEdit = () => {
-        console.log(`Edit row ${params.row.id}`);
-      };
-
-      return (
-        <>
-          <Button
-            color="primary"
-            style={{ color: "#6870fa" }}
-            size="small"
-            onClick={handleEdit}
-          >
-            <EditIcon />
-          </Button>
-        </>
-      );
-    },
-  },
-];
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
@@ -69,8 +41,42 @@ const Classification = () => {
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [newBrand, setNewBrand] = useState("");
+  const [newClassification, setNewClassification] = useState("");
   const [pageSize, setPageSize] = useState(10);
+  const[selectedvalue,setSelectedValue]=useState("");
+  const matches=useMediaQuery('(max-width:600px)');
+
+  const width1=matches ? 120 : 260;
+  const columns = [
+    { field: "id", headerName: "CLASSIFICATION ID", width: width1 },
+    { field: "classification", headerName: "CLASSIFICATION NAME", width: width1 },
+    { field: "category", headerName: "CATEGORY", width: width1 },
+    {
+      field: "actions",
+      headerName: "ACTIONS",
+      sortable: false,
+      width: width1,
+      renderCell: (params) => {
+        const handleEdit = () => {
+          console.log(`Edit row ${params.row.id}`);
+        };
+  
+        return (
+          <>
+            <Button
+              color="primary"
+              style={{ color: "#6870fa" }}
+              size="small"
+              onClick={handleEdit}
+            >
+              <EditIcon />
+            </Button>
+          </>
+        );
+      },
+    },
+  ];
+  
 
 
   useEffect(() => {
@@ -91,31 +97,39 @@ const Classification = () => {
 
   const handleAddSubmit = async () => {
     const newRow = {
-      brand: newBrand,
+      classification: newClassification,
+      category:selectedvalue,
     };
     const response = await axios.post(`${apiUrl}`, newRow);
     setRows([...rows, response.data]);
     setOpenAddDialog(false);
-    setNewBrand("");
+    setNewClassification("");
   };
-
+const handleChange=(event)=>
+{
+  setSelectedValue(event.target.value);
+}
+const buttonplace=matches ? 0 : 16;
   return (
     <>
       <Box m="20px">
         <div style={{ height: 500 }}>
           <Button
+          size="small"
+          startIcon={<AddBoxOutlined />}
             variant="contained"
             color="primary"
-            style={{ background: "#6870fa", marginBottom: "10px" }}
+            sx={{ mb: 1,ml:buttonplace, fontSize: "14px" }}
+            style={{ background: "#A4A9FC", marginBottom: "10px" }}
             onClick={handleAddClick}
           >
-            Add new Classification
+            New Classification
           </Button>
 
           <Box
             className="customMuiTable"
-            m="10px 0 10px 0"
-            height="75vh"
+            m={matches ? "10px 0 10px 0px" : "10px 0 10px 130px"}
+            height="75vh"  width={matches ? "100%" : "80%"} 
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
@@ -130,7 +144,7 @@ const Classification = () => {
               },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: colors.blueAccent[700],
-                borderBottom: "none",
+                borderBottom: "none", color:"white"
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
@@ -143,14 +157,18 @@ const Classification = () => {
                 color: `${colors.greenAccent[200]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.grey[100]} !important`,
+                color: `${colors.blueAccent[300]} !important`,
               },
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
+                color: `white !important`,
+              }
             }}
           >
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
               <DataGrid 
+              autoHeight
               rows={rows} 
               columns={columns}
                componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
@@ -179,21 +197,25 @@ const Classification = () => {
                 label="Classification"
                 type="text"
                 fullWidth
-                value={newBrand}
-                onChange={(e) => setNewBrand(e.target.value)}
+                value={newClassification}
+                onChange={(e) => setNewClassification(e.target.value)}
+                InputProps={{
+                  required: true,
+                }}
               />
               <FormControl fullWidth style={{ marginTop: "10px" }} >
                 <InputLabel>Category </InputLabel>
-                <Select label="Category" >
+                <Select label="Category" value={selectedvalue} onChange={handleChange}>
                   {/* <MenuItem value="">Select Category</MenuItem> */}
-                  <MenuItem value="Assigned" >Assigned</MenuItem>
-                  <MenuItem value="Not Assigned">Not Assigned</MenuItem>
+                  <MenuItem value="Assignable" >Assignable</MenuItem>
+                  <MenuItem value="Non-Assignable">Non-Assignable</MenuItem>
                 </Select>
               </FormControl>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleAddClose}>Cancel</Button>
+             
               <Button onClick={handleAddSubmit} variant="contained">Save</Button>
+              <Button onClick={handleAddClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
         </div>

@@ -47,3 +47,9 @@ body,
 .minoutlet{
   margin-left: 0px ;
 }
+
+.sticky-col .MuiDataGrid-colCellWrapper {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}

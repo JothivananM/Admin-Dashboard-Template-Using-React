@@ -58,6 +58,8 @@ export const data = [
 
 export const options = {
   title: "Asset Request List",
+  chartArea: { width: "50%" },
+  
 };
 
 
@@ -68,9 +70,9 @@ export default function PieChart() {
       <Chart
         chartType="PieChart"
         data={data}
-        width="auto"
+   
         options={options}
-        height={"400px"}
+        height={"350px"}
       />
       {/* <Pie data={data} options={options} />; */}
 

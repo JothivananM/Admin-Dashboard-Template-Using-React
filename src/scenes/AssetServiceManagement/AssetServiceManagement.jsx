@@ -63,15 +63,19 @@ export default function AssetServiceManagement() {
         </Box>
         <Box display="flex" justifyContent="end" mt="20px" mr="20px">
           <Box display="flex" gap="15px">
-            <Button 
-            variant="contained" 
-            style={{ fontSize: "15px" }} 
-            color="secondary">
+            <Button
+              variant="contained"
+              style={{ fontSize: "15px" }}
+              color="secondary">
               Save
             </Button>
-            <Button 
-            style={{ fontSize: "15px" }}>
-            Cancel</Button>
+            <Button
+              style={{ fontSize: "15px" }}
+              variant="outlined"
+              color="secondary"
+            >
+              Cancel
+            </Button>
           </Box>
         </Box>
       </div>

@@ -71,13 +71,14 @@ export const data = [
 
 export const options = {
   title: "Total Assignable Assets",
-  chartArea: { width: "50%" },
+  chartArea: { width: "70%" },
   hAxis: {
     title: "Asset Count",
     minValue: 0,
   },
   vAxis: {
     title: "Classification",
+    minValue: 0,
   },
 };
 
@@ -87,10 +88,10 @@ export const options = {
 export default function BarChart() {
 
   return(
-    <div>
+    <div style={{margin:'0px'}}>
      <Chart
       chartType="BarChart"
-      height="400px"
+      height="350px"
       data={data}
       options={options}
     />

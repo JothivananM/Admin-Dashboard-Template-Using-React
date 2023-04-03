@@ -41,8 +41,8 @@ const columns = [
       const handleEdit = (params) => {
         console.log(`Edit row ${params.row.id}`);
       };
-      
-      
+
+
       return (
         <>
           <Button
@@ -51,7 +51,7 @@ const columns = [
             size="small"
             onClick={handleEdit}
           >
-            <EditIcon  />
+            <EditIcon />
           </Button>
         </>
       );
@@ -116,7 +116,7 @@ const AssetRequest = () => {
       setIsShowing(true);
     } else {
       setIsShowing(false);
-}
+    }
   };
 
   return (
@@ -170,10 +170,10 @@ const AssetRequest = () => {
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
-              <DataGrid 
-              rows={rows} 
-              columns={columns} 
-              componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
                 components={{ Toolbar: CustomToolbar }}
                 rowsPerPageOptions={[10, 20]}
                 pageSize={pageSize}
@@ -244,9 +244,17 @@ const AssetRequest = () => {
             </DialogContent>
 
             <DialogActions>
-              <Button onClick={handleAddClose}>Cancel</Button>
-              <Button onClick={handleAddSubmit} variant="contained">
+              <Button
+                onClick={handleAddSubmit}
+                variant="contained"
+              >
                 Save
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleAddClose}
+              >
+                Cancel
               </Button>
             </DialogActions>
           </Dialog>

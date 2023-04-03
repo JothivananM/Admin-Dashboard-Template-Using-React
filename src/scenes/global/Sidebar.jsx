@@ -11,7 +11,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import BrandingWatermarkOutlinedIcon from '@mui/icons-material/BrandingWatermarkOutlined';
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
-import { GridViewOutlined, LiveHelpOutlined, SettingsSuggestOutlined } from "@mui/icons-material";
+import { BuildOutlined, GridViewOutlined, LiveHelpOutlined, SettingsSuggestOutlined } from "@mui/icons-material";
 // import classes from './Index1.module.css';
 
 
@@ -20,25 +20,25 @@ const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
   const colors = tokens(theme.palette.mode);
   const [isSelected,setIsSelected] = useState(true);
   return (
-      <MenuItem
+    <MenuItem
       active={isSelected}
-        style={{
-          color: colors.primary[500],
-        }}
+      style={{
+        color: colors.grey[400],
+      }}
       onClick={() => {
         setSelected(title);
         setIsCollapsed(true);
       }}
-        icon={icon}
-      >
-        <Typography>{title}</Typography>
-        <NavLink to={to}  className={({ isActive }) =>{
-           return isActive ?  setIsSelected(true) 
-           : setIsSelected(false) 
+      icon={icon}
+    >
+      <Typography>{title}</Typography>
+      <NavLink to={to} className={({ isActive }) => {
+        return isActive ? setIsSelected(true)
+          : setIsSelected(false)
 
-        }
-    }></NavLink>
-      </MenuItem>
+      }
+      }></NavLink>
+    </MenuItem>
   );
 };
 
@@ -48,29 +48,29 @@ const Sidebar = (props) => {
   const [selected, setSelected] = useState("");
   const matches = useMediaQuery('(max-width:600px)');
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isSidebarOpen,setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const toggleCollapsed =() =>{
+  const toggleCollapsed = () => {
     setIsCollapsed(!isCollapsed);
-   
+
   }
 
-  const handleClick = () =>{
+  const handleClick = () => {
     setIsCollapsed(true);
-  
+
   }
 
   return (
     <Box className="sidebarContainer"
       sx={{
         "& .pro-sidebar-inner": {
-          background: `${colors.blueAccent[500]} !important`,
+          background: `#A4A9FC !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
-          padding: "5px 35px 5px 20px !important",
+          padding: "5px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
           color: "#dbf5ee !important",
@@ -78,8 +78,8 @@ const Sidebar = (props) => {
         "& .pro-menu-item.active": {
           color: "#dbf5ee !important",
         },
-        "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul" :{
-          height:"100vh !important" 
+        "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul": {
+          height: "100vh !important"
         }
       }}
     >
@@ -87,10 +87,10 @@ const Sidebar = (props) => {
         <ProSidebar
           // rtl="true"
           collapsed={isCollapsed}
-          breakPoint={props.isOpen ? "xxl" : "" }
-        
-          // closeOnClick ={true}
-          // rtl={true}
+          breakPoint={props.isOpen ? "xxl" : ""}
+
+        // closeOnClick ={true}
+        // rtl={true}
         >
           <div>
             <Menu iconShape="square" >
@@ -100,7 +100,7 @@ const Sidebar = (props) => {
                 icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
                 style={{
                   margin: "10px 0 20px 0",
-                  color: colors.grey[100],
+                  color: colors.grey[900],
                 }}
               >
                 {!isCollapsed && (
@@ -110,11 +110,13 @@ const Sidebar = (props) => {
                     alignItems="center"
                     ml="15px"
                   >
-                    <Typography variant="h3" color={colors.grey[100]}>
+                    {/* <Typography variant="h3" color={colors.grey[100]}>
                       ADMIN
-                    </Typography>
-                    <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <MenuOutlinedIcon />
+                    </Typography> */}
+                    <IconButton
+                      onClick={() => setIsCollapsed(!isCollapsed)}>
+                      <MenuOutlinedIcon
+                         />
                     </IconButton>
                   </Box>
                 )}
@@ -150,13 +152,13 @@ const Sidebar = (props) => {
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 {/* <Tooltip title="Dashboard" placement="right"> */}
                 <Item
-                  
+
                   title="Dashboard"
                   to="/"
                   icon={<HomeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
-                    setIsCollapsed={setIsCollapsed}
+                  setIsCollapsed={setIsCollapsed}
                 />
                 {/* </Tooltip> */}
 
@@ -215,7 +217,7 @@ const Sidebar = (props) => {
                 <Item
                   title="Service Mmanagement"
                   to="/servicemanagement"
-                  icon={<SettingsSuggestOutlined />}
+                  icon={<BuildOutlined />}
                   selected={selected}
                   setSelected={setSelected}
                   setIsCollapsed={setIsCollapsed}
@@ -243,7 +245,7 @@ const Sidebar = (props) => {
               </Box>
 
               {/* MENU ICON */}
-             
+
             </Menu>
           </div>
         </ProSidebar>
