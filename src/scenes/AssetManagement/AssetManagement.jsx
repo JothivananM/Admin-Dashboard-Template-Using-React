@@ -13,14 +13,10 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+
 import NewAssetForm from "./NewAssetForm";
 import AssignReAssign from "./AssignReAssign/AssignReAssign";
-import AssetAssignedHistory from "./AssetHistory/AssetAssigned";
-import { AssetHistoryNavigation } from "./AssetNavigation/AssetHistoryNavigation";
+
 import { Link, NavLink } from "react-router-dom";
 // import AssetAssignProcess from "./AssetAssignProcess";
 import './AssetManagement.css'
@@ -170,7 +166,7 @@ const AssetManagement = () => {
   return (
     <>
       <Box m="20px">
-        <div style={{ height: 500 }}>
+        <div>
           <Button
             variant="contained"
             startIcon={<AddBoxOutlined />}
@@ -250,11 +246,12 @@ const AssetManagement = () => {
 
 
           </Box>
-          {/* New Asset */}
+           {/* New Asset */}
           <Dialog
             open={openAddDialog}
             onClose={handleAddClose}
             fullScreen={fullScreen}
+            maxWidth="lg"
           >
             <DialogTitle>
               <h2 style={{ margin: "0px" }}>Asset Details</h2>

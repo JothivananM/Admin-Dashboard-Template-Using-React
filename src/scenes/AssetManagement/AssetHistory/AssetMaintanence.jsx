@@ -17,13 +17,13 @@ const columns = [
 
 
 
-  
+
 ];
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
 const AssetMaintananceHistory = () => {
-  const data= useParams();
+  const data = useParams();
   console.log(data);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -36,7 +36,7 @@ const AssetMaintananceHistory = () => {
       //Getting Data From DataBase
       const response = await axios.get(`${apiUrl}`);
       setRows(response.data);
-     
+
     };
     fetchRows();
   }, []);
@@ -61,14 +61,14 @@ const AssetMaintananceHistory = () => {
 
   return (
     <>
-      <Box m="20px">
+      <Box m="5px">
         <div style={{ height: 500 }}>
-          
+
 
           <Box
             className="customMuiTable"
             m="10px 0 10px 0"
-            
+
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
@@ -78,13 +78,12 @@ const AssetMaintananceHistory = () => {
                 borderBottom: "none",
               },
               "& .name-column--cell": {
-                color: colors.greenAccent[300],
+                color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
+                color: "white",
                 backgroundColor: colors.blueAccent[700],
                 borderBottom: "none",
-                color:'white'
-
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
@@ -92,19 +91,23 @@ const AssetMaintananceHistory = () => {
               "& .MuiDataGrid-footerContainer": {
                 borderTop: "none",
                 backgroundColor: colors.blueAccent[700],
+                color: "white",
               },
               "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
+                color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.grey[100]} !important`,
+                color: `${colors.blueAccent[300]} !important`,
               },
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
+                color: `white !important`,
+              }
             }}
           >
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
-              <DataGrid 
+              <DataGrid
                 autoHeight
                 rows={rows}
                 columns={columns}

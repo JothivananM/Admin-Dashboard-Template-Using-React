@@ -7,7 +7,7 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { useTheme } from "@mui/material";
+import { Divider, useTheme } from "@mui/material";
 
 import {
   Button,
@@ -27,48 +27,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
-const columns = [
-  { field: "ID", headerName: "Request ID", width: 100 },
-  {
-    field: "Requestor",
-    headerName: "Requestor",
-    width: 100,
-  },
-  { field: "RequestDate", headerName: "Request Date", width: 100 },
-  { field: "AssetName", headerName: "Asset Name", width: 100 },
-  { field: "RequestType", headerName: "Request Type", width: 100 },
-  { field: "Reason", headerName: "Reason", width: 100 },
-  { field: "Status", headerName: "Status", width: 100 },
-  {
-    field: "AssetClassification",
-    headerName: "Asset Classification",
-    width: 150,
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    sortable: false,
-    width: 150,
-    renderCell: (params) => {
-      const handleEdit = () => {
-        console.log(`Edit row ${params.row.id}`);
-      };
-
-      return (
-        <>
-          <FormControl fullWidth>
-            <Select label="">
-              <MenuItem value="Accepted">Accepted</MenuItem>
-              <MenuItem value="Declined">Declined</MenuItem>
-              <MenuItem value="Fulfilled">Fulfilled</MenuItem>
-            </Select>
-          </FormControl>
-        </>
-      );
-    },
-  },
-];
+import { AddBoxOutlined } from "@mui/icons-material";
+import NewAssetForm from "../AssetManagement/NewAssetForm";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
@@ -85,13 +46,78 @@ const CustomToolbar = () => {
 
 const AssetRequestList = () => {
   const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newBrand, setNewBrand] = useState("");
   const [isShowing, setIsShowing] = useState(false);
   const [pageSize, setPageSize] = useState(10);
+  const [selectedRows, setSelectedRows] = useState({});
+  const [openAcceptedDialog, setOpenAcceptedDialog] = useState(false);
+  const navigate = useNavigate();
 
+  const columns = [
+    { field: "ID", headerName: "Request ID", width: 100 },
+    {
+      field: "Requestor",
+      headerName: "Requestor",
+      width: 100,
+    },
+    { field: "RequestDate", headerName: "Request Date", width: 100 },
+    { field: "AssetName", headerName: "Asset Name", width: 100 },
+    { field: "RequestType", headerName: "Request Type", width: 100 },
+    { field: "Reason", headerName: "Reason", width: 100 },
+    { field: "Status", headerName: "Status", width: 100 },
+    {
+      field: "AssetClassification",
+      headerName: "Asset Classification",
+      width: 150,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      width: 150,
+      renderCell: (params) => {
+        const handleEdit = () => {
+          console.log(`Edit row ${params.row.id}`);
+        };
+
+        const handleSelectChange = (event, id) => {
+          setSelectedRows((prevSelectedRows) => ({
+            ...prevSelectedRows,
+            [id]: event.target.value,
+          }));
+          console.log(event.target.value)
+          if (event.target.value === "Accepted" && params.row.RequestType !== "New") {
+            console.log(params);
+            setOpenAcceptedDialog(true);
+          }
+          else {
+            navigate('/assetmanagement');
+          }
+
+        };
+
+        return (
+          <>
+            <FormControl fullWidth>
+              <Select
+                label=""
+                value={selectedRows[params.row.id] || ""}
+                onChange={(event) => handleSelectChange(event, params.row.id)}
+              >
+                <MenuItem value="Accepted">Accepted</MenuItem>
+                <MenuItem value="Declined">Declined</MenuItem>
+                <MenuItem value="Fulfilled">Fulfilled</MenuItem>
+              </Select>
+            </FormControl>
+          </>
+        );
+      },
+    },
+  ];
 
   useEffect(() => {
     const fetchRows = async () => {
@@ -103,10 +129,12 @@ const AssetRequestList = () => {
 
   const handleAddClick = () => {
     setOpenAddDialog(true);
+
   };
 
   const handleAddClose = () => {
     setOpenAddDialog(false);
+    setOpenAcceptedDialog(false);
   };
 
   const handleAddSubmit = async () => {
@@ -116,6 +144,7 @@ const AssetRequestList = () => {
     const response = await axios.post(`${apiUrl}`, newRow);
     setRows([...rows, response.data]);
     setOpenAddDialog(false);
+    setOpenAcceptedDialog(false);
     setNewBrand("");
   };
   const [selectedOption, setSelectedOption] = useState("");
@@ -136,11 +165,11 @@ const AssetRequestList = () => {
         <div style={{ height: 500 }}>
           <Button
             variant="contained"
-            color="secondary"
-            bold
+            style={{ background: "#A4A9FC" }}
+            startIcon={<AddBoxOutlined />}
             onClick={handleAddClick}
           >
-            Add New Request
+            New Request
           </Button>
 
           <Box
@@ -150,16 +179,16 @@ const AssetRequestList = () => {
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
-                zIndex: 2,
                 border: "none",
               },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none",
               },
               "& .name-column--cell": {
-                color: colors.greenAccent[300],
+                color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
+                color: "white",
                 backgroundColor: colors.blueAccent[700],
                 borderBottom: "none",
               },
@@ -169,19 +198,24 @@ const AssetRequestList = () => {
               "& .MuiDataGrid-footerContainer": {
                 borderTop: "none",
                 backgroundColor: colors.blueAccent[700],
+                color: "white",
               },
               "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
+                color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.grey[100]} !important`,
+                color: `${colors.blueAccent[300]} !important`,
               },
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
+                color: `white !important`,
+              }
             }}
           >
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
               <DataGrid
+                autoHeight
                 autoWidth
                 rows={rows}
                 columns={columns}
@@ -193,10 +227,12 @@ const AssetRequestList = () => {
               />
             </div>
           </Box>
-          <Dialog onClose={handleAddClose}>
+          {/* Asset Service */}
+          <Dialog open={openAcceptedDialog} onClose={handleAddClose}>
             <DialogTitle>
               <h2 style={{ marginBottom: "-10px" }}>Asset Service </h2>
             </DialogTitle>
+            <Divider />
             <DialogContent>
               <Box m="20px">
                 <div>
@@ -217,9 +253,11 @@ const AssetRequestList = () => {
                       label="Asset ID"
                       fullWidth
                       sx={{ gridColumn: "span 2" }}
+
                     />
 
-                    <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
+                    <FormControl fullWidth sx={{ gridColumn: "span 2" }}
+                      size>
                       <InputLabel>Asset Name</InputLabel>
                       <Select
                         label="Asset Name"
@@ -234,12 +272,14 @@ const AssetRequestList = () => {
                       label="Request ID"
                       fullWidth
                       sx={{ gridColumn: "span 2" }}
+
                     />
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} size="small">
                       <DatePicker
                         label="Request Date"
                         sx={{ gridColumn: "span 2" }}
+
                       />
                     </LocalizationProvider>
 
@@ -247,59 +287,66 @@ const AssetRequestList = () => {
                       label="Service ID"
                       fullWidth
                       sx={{ gridColumn: "span 2" }}
+
                     />
 
                     <TextField
                       label="Service Provider"
                       fullWidth
                       sx={{ gridColumn: "span 2" }}
+
                     />
 
                     <TextField
                       label="Complain Detail"
                       fullWidth
                       sx={{ gridColumn: "span 4" }}
+
                     />
 
                     <TextField
                       label="Service Completed detail"
                       fullWidth
                       sx={{ gridColumn: "span 2" }}
+
                     />
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} >
                       <DatePicker
                         label="Service Given Date"
-                        sx={{ gridColumn: "span 2" }}
+                        sx={{
+                          gridColumn: "span 2", width: "228px",
+                          height: "1px", lineHeight: "1px",
+                        }}
                       />
                     </LocalizationProvider>
                   </Box>
-                  <Box display="flex" justifyContent="end" mt="20px" mr="20px">
+                  <Box display="flex" justifyContent="end" mt="20px" mr="13px">
                     <Box display="flex" gap="15px">
                       <Button
                         variant="contained"
-                        style={{ fontSize: "15px" }}
                         color="secondary"
                       >
                         Save
                       </Button>
                       <Button
                         onClick={handleAddClose}
-                        style={{ fontSize: "15px" }}
+                        variant="outlined"
                       >
                         Cancel
                       </Button>
                     </Box>
                   </Box>
-            </div>
-          </Box>
+                </div>
+              </Box>
             </DialogContent>
           </Dialog>
-
+          {/* Asset Request */}
           <Dialog open={openAddDialog} onClose={handleAddClose}>
             <DialogTitle>
-              <h2 style={{ marginBottom: "-10px" }}>Add New Request</h2>
+              <h2 style={{ marginBottom: "-10px" }}>Asset Request</h2>
             </DialogTitle>
+            <Divider />
             <DialogContent>
               {/* Asset Id */}
               <TextField
@@ -365,35 +412,25 @@ const AssetRequestList = () => {
                 sx={{ gridColumn: "span 2" }}
                 style={{ marginTop: "10px" }}
               >
-                <textarea
-                  style={{
-                    border: "1px solid #C2C2C2",
-                    borderRadius: "3px",
-                    height: "90px",
-                  }}
-                  aria-label="empty textarea"
-                  placeholder="Description"
-                  rows="3"
-                  cols="40"
-              />
+                <TextField
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  rows={2}
+                />
               </FormControl>
             </DialogContent>
 
             <DialogActions>
-              <Button
-                variant="contained"
-                onClick={handleAddSubmit}
-              >
+              <Button variant="contained" onClick={handleAddSubmit}>
                 Save
               </Button>
-              <Button
-                variant="outlined"
-                onClick={handleAddClose}
-              >
+              <Button variant="outlined" onClick={handleAddClose}>
                 Cancel
               </Button>
             </DialogActions>
           </Dialog>
+
         </div>
       </Box>
     </>

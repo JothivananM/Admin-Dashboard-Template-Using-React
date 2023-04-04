@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import { Link, NavLink } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
@@ -23,7 +23,8 @@ const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
     <MenuItem
       active={isSelected}
       style={{
-        color: colors.grey[400],
+        // color: colors.grey[400],
+        color: 'white',
       }}
       onClick={() => {
         setSelected(title);
@@ -73,10 +74,11 @@ const Sidebar = (props) => {
           padding: "5px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#dbf5ee !important",
+          color: `${colors.grey[400]} !important`,
         },
         "& .pro-menu-item.active": {
-          color: "#dbf5ee !important",
+          color: `${colors.grey[400]} !important`,
+          background: 'white'
         },
         "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul": {
           height: "100vh !important"
@@ -99,8 +101,9 @@ const Sidebar = (props) => {
                 onClick={() => setIsCollapsed(!isCollapsed)}
                 icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
                 style={{
-                  margin: "10px 0 20px 0",
-                  color: colors.grey[900],
+                  margin: "12px 0 20px 0",
+                  borderBottom: "1px solid lightgray",
+                  color: colors.grey[400],
                 }}
               >
                 {!isCollapsed && (
@@ -214,7 +217,7 @@ const Sidebar = (props) => {
                   setIsCollapsed={setIsCollapsed}
 
                 />
-                <Item
+                {/* <Item
                   title="Service Mmanagement"
                   to="/servicemanagement"
                   icon={<BuildOutlined />}
@@ -222,7 +225,8 @@ const Sidebar = (props) => {
                   setSelected={setSelected}
                   setIsCollapsed={setIsCollapsed}
 
-                />
+                /> */}
+                <Divider />
                 <Item
                   title="User Dashboard"
                   to="/dashboard"

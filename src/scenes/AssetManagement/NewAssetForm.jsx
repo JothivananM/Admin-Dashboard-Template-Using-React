@@ -96,7 +96,7 @@ const NewAssetForm = () => {
 
   return (
     <>
-      <Box m="20px">
+      <Box>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
@@ -166,6 +166,7 @@ const NewAssetForm = () => {
                   helperText={touched.assetName && errors.assetName}
                   sx={{ gridColumn: "span 2" }}
                 />
+
                 {/* Brand */}
                 <FormControl fullWidth sx={{ gridColumn: "span 2" }} >
                   <InputLabel>Brand* </InputLabel>
@@ -209,11 +210,11 @@ const NewAssetForm = () => {
                 <FormControl sx={{ gridColumn: "span 2" }}>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker label="Next Maintenance"
-                      slotProps={{
-                        textField: {
-                          helperText: 'MM / DD / YYYY',
-                        },
-                      }}
+                    // slotProps={{
+                    //   textField: {
+                    //     helperText: 'MM / DD / YYYY',
+                    //   },
+                    // }}
                     />
                   </LocalizationProvider>
                 </FormControl>
@@ -242,18 +243,34 @@ const NewAssetForm = () => {
 
                 {/* Description */}
                 <FormControl fullWidth sx={{ gridColumn: "span 2" }} >
-                  <textarea
+                  {/* <textarea
                     style={{ border: "0.5px solid #C4C4C4", borderRadius: "3px", background: "none" }}
                     aria-label="empty textarea"
                     placeholder="Description"
                     rows="3" cols="40"
+                  /> */}
+                  <TextField
+                    id="outlined-multiline-static"
+                    placeholder="Placeholder"
+                    label="Description"
+                    rows={2}
                   />
                 </FormControl>
 
+
+
+                {/* Attachement */}
+                <FormControl sx={{ gridColumn: "span 2" }}>
+                  <input
+                    id="upload-photo"
+                    name="upload-photo"
+                    type="file" />
+                </FormControl>
+
                 {/* Characteristics / Spec */}
-                <FormControl fullWidth sx={{ gridColumn: "span 2" }}>
+                <FormControl fullWidth sx={{ gridColumn: "span 2", margin: 0 }}>
                   <div style={{ display: "flex", margin: 0, justifyContent: "space-between" }}>
-                    <h4>
+                    <h4 style={{ margin: 0 }}>
                       Specification Details
                     </h4>
 
@@ -303,15 +320,6 @@ const NewAssetForm = () => {
                   ))}
                   {/* <button onClick={handleAddField}>Add Field</button> */}
 
-                </FormControl>
-
-
-                {/* Attachement */}
-                <FormControl sx={{ gridColumn: "span 2" }}>
-                  <input
-                    id="upload-photo"
-                    name="upload-photo"
-                    type="file" />
                 </FormControl>
 
               </Box>

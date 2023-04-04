@@ -89,13 +89,45 @@ const Brand = () => {
       }
     }
   };
-  const width1=matches ? 120 : 340;
+
+  const handleEditSubmit = async () => {
+    console.log(editingRow);
+    if (editingRow.brand === "") {
+      alert("Name field cannot be left blank");
+    } else if (
+      rows.find((p) => {
+        return (
+          p.brand.toLocaleLowerCase() ===
+          editingRow.brand.toLocaleLowerCase()
+        );
+      })
+    ) {
+      alert(
+        "This Brand Name is already taken. Please choose a different name"
+      );
+    } else {
+      const response = await axios.put(
+        `${apiUrl}/${editingRow.id}`,
+        editingRow
+      );
+      setUpdateDialog(false);
+
+      setEditingRow("");
+      setRows(
+        rows.map((row) =>
+          row.id === response.data.id ? response.data : row
+        )
+      );
+      alert("Updated Successfully");
+    }
+  };
+  const width1 = matches ? 120 : 340;
   const columns = [
     {
       field: "id",
       headerName: "ID",
       headerStyle: { backgroundColor: "blue", color: "white" },
-     width: width1
+      width: width1
     },
     { field: "brand", headerName: "BRAND NAME", width: width1 },
     {
@@ -112,37 +144,7 @@ const Brand = () => {
         };
         //When click edit button handleEditSubmit will executed
 
-        const handleEditSubmit = async () => {
-          console.log(editingRow);
-          if (editingRow.brand === "") {
-            alert("Name field cannot be left blank");
-          } else if (
-            rows.find((p) => {
-              return (
-                p.brand.toLocaleLowerCase() ===
-                editingRow.brand.toLocaleLowerCase()
-              );
-            })
-          ) {
-            alert(
-              "This Brand Name is already taken. Please choose a different name"
-            );
-          } else {
-            const response = await axios.put(
-              `${apiUrl}/${editingRow.id}`,
-              editingRow
-            );
-            setUpdateDialog(false);
 
-            setEditingRow("");
-            setRows(
-              rows.map((row) =>
-                row.id === response.data.id ? response.data : row
-              )
-            );
-            alert("Updated Successfully");
-          }
-        };
 
         return (
           <>
@@ -155,46 +157,7 @@ const Brand = () => {
               <EditIcon />
             </Button>
             {/* Update */}
-            <Dialog open={updateDialog} >
-              <DialogTitle>
-                <h2 style={{ marginBottom: "-10px" }}>Update Brand</h2>
-              </DialogTitle>
-              <DialogContent>
-                <TextField
-                  margin="dense"
-                  label="ID Auto Generated"
-                  type="text"
-                  value={editingRow.id}
-                  fullWidth
-                  disabled
-                />
-                <TextField
-                  autofocus
-                  margin="dense"
-                  label="Brand"
-                  type="text"
-                  fullWidth
-                  defaultValue={editingRow.brand}
-                  onChange={(e) =>
-                    setEditingRow((prevRow) => ({
-                      ...prevRow,
-                      brand: e.target.value,
-                    }))
-                  }
-                  inputRef={inputRef}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleEditSubmit}
-                >
-                  Update
-                </Button>
-                <Button onClick={handleAddClose}>Cancel</Button>
-              </DialogActions>
-            </Dialog>
+
           </>
         );
       },
@@ -217,7 +180,7 @@ const Brand = () => {
     const value = event.target.value;
     setNewBrandError(value.trim() === "");
   };
- const buttonplace=matches ? 0 : 16;
+  const buttonplace = matches ? 0 : 16;
   return (
     <>
       <Box m="20px">
@@ -226,7 +189,7 @@ const Brand = () => {
             variant="contained"
             size="small"
             startIcon={<AddBoxOutlined />}
-            sx={{ mb: 1,ml:buttonplace, fontSize: "14px" }}
+            sx={{ mb: 1, ml: buttonplace, fontSize: "14px" }}
             style={{ background: "#A4A9FC" }}
             onClick={handleAddClick}
           >
@@ -328,7 +291,49 @@ const Brand = () => {
               <Button onClick={handleAddClose}>Cancel</Button>
             </DialogActions>
           </Dialog>
+          {/* Edit Brand */}
+          <Dialog open={updateDialog} >
+            <DialogTitle>
+              <h2 style={{ marginBottom: "-10px" }}>Update Brand</h2>
+            </DialogTitle>
+            <DialogContent>
+              <TextField
+                margin="dense"
+                label="ID Auto Generated"
+                type="text"
+                value={editingRow.id}
+                fullWidth
+                disabled
+              />
+              <TextField
+                autofocus
+                margin="dense"
+                label="Brand"
+                type="text"
+                fullWidth
+                defaultValue={editingRow.brand}
+                onChange={(e) =>
+                  setEditingRow((prevRow) => ({
+                    ...prevRow,
+                    brand: e.target.value,
+                  }))
+                }
+                inputRef={inputRef}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleEditSubmit}
+              >
+                Update
+              </Button>
+              <Button onClick={handleAddClose}>Cancel</Button>
+            </DialogActions>
+          </Dialog>
         </div>
+
       </Box>
     </>
   );

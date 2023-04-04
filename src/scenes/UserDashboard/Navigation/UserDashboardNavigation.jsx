@@ -3,7 +3,7 @@ import {
     Button
 } from "@mui/material";
 import { NavLink, useParams } from 'react-router-dom';
-// import classes from './AssetHistoryNavigation.module.css';
+import classes from './UserDashboardNavigation.module.css';
 
 export const UserDashboardNavigation = () => {
 
@@ -13,10 +13,14 @@ export const UserDashboardNavigation = () => {
     return (
         <div>
             <header>
-                <nav>
-                    <NavLink to='/dashboard' className={({ isActive }) => {
-                        return isActive ? '': undefined;
-                    }}>
+                <nav className={classes.list}>
+                    <NavLink sx={{ gridColumn: "span 2" }}
+                        style={{ marginRight: "5px" }}
+                        to='/dashboard' className={({ isActive }) => {
+                            return isActive ? classes.active : undefined;
+                        }}
+                        end
+                    >
                         <Button
                             variant="outlined"
                             color="secondary"
@@ -26,8 +30,9 @@ export const UserDashboardNavigation = () => {
                             Assigned Assets
                         </Button>
                     </NavLink>
-                    <NavLink to='assignedassethistory' className={({ isActive }) => {
-                        return isActive ? '' : undefined
+
+                    <NavLink sx={{ gridColumn: "span 2" }} to='assignedassethistory' className={({ isActive }) => {
+                        return isActive ? classes.active : undefined
                     }
                     }>
                         <Button

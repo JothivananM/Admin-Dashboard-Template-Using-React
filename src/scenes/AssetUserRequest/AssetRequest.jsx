@@ -21,6 +21,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { AddBoxOutlined } from "@mui/icons-material";
 
 const columns = [
   { field: "AssetName", headerName: "AssetName" },
@@ -47,7 +48,7 @@ const columns = [
         <>
           <Button
             color="primary"
-            style={{ color: "#6870fa" }}
+            style={{ color: "#A4A9FC" }}
             size="small"
             onClick={handleEdit}
           >
@@ -125,11 +126,11 @@ const AssetRequest = () => {
         <div style={{ height: 500 }}>
           <Button
             variant="contained"
-            color="secondary"
-            bold
+            style={{ background: "#A4A9FC" }}
+            startIcon={<AddBoxOutlined />}
             onClick={handleAddClick}
           >
-            Add New Request
+            New Request
           </Button>
 
           <Box
@@ -139,16 +140,16 @@ const AssetRequest = () => {
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
-                zIndex: 2,
                 border: "none",
               },
               "& .MuiDataGrid-cell": {
                 borderBottom: "none",
               },
               "& .name-column--cell": {
-                color: colors.greenAccent[300],
+                color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
+                color: "white",
                 backgroundColor: colors.blueAccent[700],
                 borderBottom: "none",
               },
@@ -158,19 +159,24 @@ const AssetRequest = () => {
               "& .MuiDataGrid-footerContainer": {
                 borderTop: "none",
                 backgroundColor: colors.blueAccent[700],
+                color: "white",
               },
               "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
+                color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.grey[100]} !important`,
+                color: `${colors.blueAccent[300]} !important`,
               },
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
+                color: `white !important`,
+              }
             }}
           >
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
               <DataGrid
+                autoHeight
                 rows={rows}
                 columns={columns}
                 componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
