@@ -23,8 +23,8 @@ const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
     <MenuItem
       active={isSelected}
       style={{
-        // color: colors.grey[400],
-        color: 'white',
+        color: colors.grey[400],
+        // color: 'white',
       }}
       onClick={() => {
         setSelected(title);
@@ -65,7 +65,8 @@ const Sidebar = (props) => {
     <Box className="sidebarContainer"
       sx={{
         "& .pro-sidebar-inner": {
-          background: `#A4A9FC !important`,
+          // background: `#A4A9FC !important`,
+          background: `whitesmoke !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -75,10 +76,12 @@ const Sidebar = (props) => {
         },
         "& .pro-inner-item:hover": {
           color: `${colors.grey[400]} !important`,
+          // color: `#A4A9FC !important`,
         },
         "& .pro-menu-item.active": {
           color: `${colors.grey[400]} !important`,
-          background: 'white'
+          // background: 'white'
+          background: `#A4A9FC !important`,
         },
         "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul": {
           height: "100vh !important"

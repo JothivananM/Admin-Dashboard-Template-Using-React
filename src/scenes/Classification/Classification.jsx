@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid, GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarDensitySelector, } from "@mui/x-data-grid";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Divider, useMediaQuery } from "@mui/material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material";
 
@@ -26,15 +26,15 @@ import { AddBoxOutlined } from "@mui/icons-material";
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
 const CustomToolbar = () => {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-        {/* <GridToolbarExport /> */}
-      </GridToolbarContainer>
-    );
-  }
+  return (
+    <GridToolbarContainer>
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      {/* <GridToolbarExport /> */}
+    </GridToolbarContainer>
+  );
+}
 
 const Classification = () => {
   const theme = useTheme();
@@ -43,24 +43,24 @@ const Classification = () => {
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const [newClassification, setNewClassification] = useState("");
   const [pageSize, setPageSize] = useState(10);
-  const[selectedvalue,setSelectedValue]=useState("");
-  const matches=useMediaQuery('(max-width:600px)');
+  const [selectedvalue, setSelectedValue] = useState("");
+  const matches = useMediaQuery('(max-width:600px)');
 
-  const width1=matches ? 120 : 260;
+  const width1 = matches ? 120 : 260;
   const columns = [
-    { field: "id", headerName: "CLASSIFICATION ID", width: width1 },
-    { field: "classification", headerName: "CLASSIFICATION NAME", width: width1 },
-    { field: "category", headerName: "CATEGORY", width: width1 },
+    { field: "id", headerName: "Classification Id", width: width1 },
+    { field: "classification", headerName: "Classification Name", width: width1 },
+    { field: "category", headerName: "Category", width: width1 },
     {
       field: "actions",
-      headerName: "ACTIONS",
+      headerName: "Actions",
       sortable: false,
       width: width1,
       renderCell: (params) => {
         const handleEdit = () => {
           console.log(`Edit row ${params.row.id}`);
         };
-  
+
         return (
           <>
             <Button
@@ -76,7 +76,7 @@ const Classification = () => {
       },
     },
   ];
-  
+
 
 
   useEffect(() => {
@@ -98,28 +98,27 @@ const Classification = () => {
   const handleAddSubmit = async () => {
     const newRow = {
       classification: newClassification,
-      category:selectedvalue,
+      category: selectedvalue,
     };
     const response = await axios.post(`${apiUrl}`, newRow);
     setRows([...rows, response.data]);
     setOpenAddDialog(false);
     setNewClassification("");
   };
-const handleChange=(event)=>
-{
-  setSelectedValue(event.target.value);
-}
-const buttonplace=matches ? 0 : 16;
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
+  }
+  const buttonplace = matches ? 0 : 16;
   return (
     <>
       <Box m="20px">
         <div style={{ height: 500 }}>
           <Button
-          size="small"
-          startIcon={<AddBoxOutlined />}
+            size="small"
+            startIcon={<AddBoxOutlined />}
             variant="contained"
             color="primary"
-            sx={{ mb: 1,ml:buttonplace, fontSize: "14px" }}
+            sx={{ mb: 1, ml: buttonplace, fontSize: "14px" }}
             style={{ background: "#A4A9FC", marginBottom: "10px" }}
             onClick={handleAddClick}
           >
@@ -129,7 +128,7 @@ const buttonplace=matches ? 0 : 16;
           <Box
             className="customMuiTable"
             m={matches ? "10px 0 10px 0px" : "10px 0 10px 130px"}
-            height="75vh"  width={matches ? "100%" : "80%"} 
+            height="75vh" width={matches ? "100%" : "80%"}
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
@@ -144,7 +143,7 @@ const buttonplace=matches ? 0 : 16;
               },
               "& .MuiDataGrid-columnHeaders": {
                 backgroundColor: colors.blueAccent[700],
-                borderBottom: "none", color:"white"
+                borderBottom: "none", color: "white"
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
@@ -167,11 +166,11 @@ const buttonplace=matches ? 0 : 16;
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
-              <DataGrid 
-              autoHeight
-              rows={rows} 
-              columns={columns}
-               componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
+              <DataGrid
+                autoHeight
+                rows={rows}
+                columns={columns}
+                componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
                 components={{ Toolbar: CustomToolbar }}
                 rowsPerPageOptions={[10, 20]}
                 pageSize={pageSize}
@@ -179,8 +178,11 @@ const buttonplace=matches ? 0 : 16;
             </div>
           </Box>
 
-          <Dialog open={openAddDialog} onClose={handleAddClose}     >
-            <DialogTitle><h2  style={{marginBottom:"-10px"}}>Add New Classification</h2></DialogTitle>
+          <Dialog open={openAddDialog} onClose={handleAddClose}>
+            <DialogTitle style={{ height: "70px" }}>
+              <h2 style={{ marginBottom: "-10px" }}>Classification Details</h2>
+            </DialogTitle>
+            <Divider />
             <DialogContent>
               <TextField
                 autoFocus
@@ -213,9 +215,9 @@ const buttonplace=matches ? 0 : 16;
               </FormControl>
             </DialogContent>
             <DialogActions>
-             
-              <Button onClick={handleAddSubmit} variant="contained">Save</Button>
-              <Button onClick={handleAddClose}>Cancel</Button>
+
+              <Button onClick={handleAddSubmit} variant="contained" color="secondary">Save</Button>
+              <Button onClick={handleAddClose} variant="outlined" color="secondary">Cancel</Button>
             </DialogActions>
           </Dialog>
         </div>

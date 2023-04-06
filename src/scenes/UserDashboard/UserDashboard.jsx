@@ -6,10 +6,10 @@ import axios from "axios";
 import { Box } from "@mui/material";
 
 const columns = [
-  { field: "id", headerName: "Asset ID" },
-  { field: "brand", headerName: "Asset Name" },
-  { field: "assignedForm", headerName: "Assigned From" },
-  { field: "qe", headerName: "Assigned To" },
+  { field: "id", headerName: "Asset ID", flex: 1 },
+  { field: "brand", headerName: "Asset Name", flex: 1 },
+  { field: "assignedForm", headerName: "Assigned On", flex: 1 },
+  // { field: "qe", headerName: "Assigned To" },
 
 ];
 

@@ -103,6 +103,7 @@ const AssetRequestList = () => {
         return (
           <>
             <FormControl fullWidth>
+              <InputLabel>Requested</InputLabel>
               <Select
                 label=""
                 value={selectedRows[params.row.id] || ""}

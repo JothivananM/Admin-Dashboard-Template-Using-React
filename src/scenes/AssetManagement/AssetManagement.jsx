@@ -46,29 +46,30 @@ const AssetManagement = () => {
   const [newBrand, setNewBrand] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isFlex = useMediaQuery("(max-width:600px) or (max-width:850px)");
 
 
   const columns = [
-    { field: "id", headerName: "Asset ID", width: 160 },
-    { field: "assetName", headerName: "Asset Name", width: 160 },
-    { field: "category", headerName: "Category", width: 160 },
-    { field: "brand", headerName: "Brand", width: 160 },
-    { field: "currentStage", headerName: "Current Stage", width: 160 },
-    { field: "assigned", headerName: "Assigned To", width: 160 },
+    { field: "id", headerName: "Asset ID", width: 160, flex: isFlex?0 : 1 },
+    { field: "assetName", headerName: "Asset Name", width: 160, flex: isFlex?0 : 1 },
+    { field: "category", headerName: "Category", width: 160, flex: isFlex?0 : 1 },
+    { field: "brand", headerName: "Brand", width: 160, flex: isFlex?0 : 1 },
+    { field: "currentStage", headerName: "Current Stage", width: 160, flex: isFlex?0 : 1 },
+    { field: "assigned", headerName: "Assigned To", width: 160, flex: isFlex?0 : 1 },
     {
       field: "actions",
       headerName: "Actions",
       sortable: false,
       width: 300,
       renderCell: (params) => {
-        console.log("params", params);
+        // console.log("params", params);
         const handleAssign = () => {
           setOpenAssign(!openAssign);
-          console.log(`Edit row ${params.row.id}`);
+          // console.log(`Edit row ${params.row.id}`);
         };
         const handleReAssign = () => {
           setOpenReAssign(!openReAssign);
-          console.log(`Edit row ${params.row.id}`);
+          // console.log(`Edit row ${params.row.id}`);
         };
 
 
@@ -137,19 +138,20 @@ const AssetManagement = () => {
   };
 
   const handleAssignSubmit = async () => {
-    console.log("Closed");
+    // console.log("Closed");
     setOpenAssign(false);
   }
 
   const handleReAssignSubmit = async () => {
-    console.log("Closed");
+    // console.log("Closed");
     setOpenReAssign(false);
   }
 
-  const handleAddClose = () => {
+  const handleAddClose = (props) => {
     setOpenAddDialog(false);
     setOpenAssign(false);
     setOpenReAssign(false);
+    console.log(props);
   };
 
   const handleAddSubmit = async () => {
@@ -162,6 +164,9 @@ const AssetManagement = () => {
     setNewBrand("");
   };
 
+  const formParams = (props) => {
+    console.log(props);
+  }
 
   return (
     <>
@@ -246,34 +251,12 @@ const AssetManagement = () => {
 
 
           </Box>
-           {/* New Asset */}
-          <Dialog
-            open={openAddDialog}
-            onClose={handleAddClose}
-            fullScreen={fullScreen}
-            maxWidth="lg"
-          >
-            <DialogTitle>
-              <h2 style={{ margin: "0px" }}>Asset Details</h2>
-            </DialogTitle>
-            <Divider />
-            <DialogContent>
+          {/* New Asset */}
+          <NewAssetForm
+            openDialog={openAddDialog}
+            closeDialog={handleAddClose} />
 
-              <NewAssetForm />
-
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleAddSubmit} variant="contained" color="secondary">
-                Save
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleAddClose}
-              >
-                Cancel</Button>
-            </DialogActions>
-          </Dialog>
+          
 
           {/*Assign  */}
           <Dialog open={openAssign} onClose={handleAddClose}>

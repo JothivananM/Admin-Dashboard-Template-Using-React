@@ -24,7 +24,7 @@ import Select from "@mui/material/Select";
 import { AddBoxOutlined } from "@mui/icons-material";
 
 const columns = [
-  { field: "AssetName", headerName: "AssetName" },
+  { field: "AssetName", headerName: "Asset Name" },
   {
     field: "Requestdate",
     headerName: "Request Date",
@@ -152,6 +152,7 @@ const AssetRequest = () => {
                 color: "white",
                 backgroundColor: colors.blueAccent[700],
                 borderBottom: "none",
+                textTransform: 'capitalize'
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],

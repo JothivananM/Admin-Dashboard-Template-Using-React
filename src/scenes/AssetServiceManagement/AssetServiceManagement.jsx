@@ -24,16 +24,6 @@ export default function AssetServiceManagement() {
             mr: 2,
           }}
         >
-          <TextField label="Asset ID" fullWidth sx={{ gridColumn: "span 2" }} />
-
-          <TextField label="Asset Name" fullWidth sx={{ gridColumn: "span 2" }} />
-
-          <TextField label="Request ID" fullWidth sx={{ gridColumn: "span 2" }} />
-
-          <LocalizationProvider dateAdapter={AdapterDayjs} >
-            <DatePicker label="Request Date" sx={{ gridColumn: "span 2" }} />
-          </LocalizationProvider>
-
           <TextField label="Service ID" fullWidth sx={{ gridColumn: "span 2" }} />
 
           <TextField
@@ -41,6 +31,17 @@ export default function AssetServiceManagement() {
             fullWidth
             sx={{ gridColumn: "span 2" }}
           />
+
+          <TextField label="Request ID" fullWidth sx={{ gridColumn: "span 2" }} />
+
+          {/* Request Date */}
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <DatePicker label="Request Date" sx={{ gridColumn: "span 2" }} />
+          </LocalizationProvider>
+
+          <TextField label="Asset ID" fullWidth sx={{ gridColumn: "span 2" }} />
+
+          <TextField label="Asset Name" fullWidth sx={{ gridColumn: "span 2" }} />
 
           <TextField
             label="Complain Detail"
@@ -51,6 +52,8 @@ export default function AssetServiceManagement() {
           <TextField
             label="Service Completed detail"
             fullWidth
+            multiline
+            rows={2}
             sx={{ gridColumn: "span 2" }}
           />
 

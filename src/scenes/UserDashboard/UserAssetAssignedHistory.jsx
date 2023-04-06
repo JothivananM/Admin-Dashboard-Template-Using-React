@@ -18,7 +18,7 @@ const UserAssetAssignedHistory = () => {
     { field: "brand", headerName: "Asset Name" },
     { field: "assigned", headerName: "Assigned From" },
     { field: "qe", headerName: "Assigned To" },
-
+    // { field: "qec", headerName: "Currently Assigned", width:"120px" },
   ];
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const UserAssetAssignedHistory = () => {
   }
 
   return (
-    <Box m="20px">
+    <Box m="">
 
       <Box
         className="customMuiTable"

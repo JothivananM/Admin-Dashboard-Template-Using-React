@@ -21,6 +21,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
 import { Box, useMediaQuery } from "@mui/material";
 import { AddBoxOutlined } from "@mui/icons-material";
+import AddNewBrand from "./AddNewBrand";
+import EditBrand from "./EditBrand";
 
 const apiUrl = "https://640efb40cde47f68db3db9f5.mockapi.io/brandname";
 
@@ -29,13 +31,16 @@ const Brand = () => {
   const colors = tokens(theme.palette.mode);
   const [rows, setRows] = useState([]);
   const [openAddDialog, setOpenAddDialog] = useState(false);
-  const [newBrand, setNewBrand] = useState("");
+
   const [pageSize, setPageSize] = useState(10);
   const [updateDialog, setUpdateDialog] = useState(false);
   const [editingRow, setEditingRow] = useState("null");
   const inputRef = useRef(null);
-  const [newBrandError, setNewBrandError] = useState(false);
+
   const matches = useMediaQuery("(max-width:600px)");
+
+  const width1 = matches ? 120 : 340;
+  const buttonplace = matches ? 0 : 16;
 
   useEffect(() => {
     const fetchRows = async () => {
@@ -46,9 +51,10 @@ const Brand = () => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
+      console.log(inputRef.current.focus())
     };
     fetchRows();
-  }, [editingRow]);
+  }, []);
 
   const handleAddClick = () => {
     setOpenAddDialog(true);
@@ -57,54 +63,21 @@ const Brand = () => {
   const handleAddClose = () => {
     setOpenAddDialog(false);
     setUpdateDialog(false);
-    setNewBrandError(false);
-    setNewBrand("");
-  };
-  //When Add the new Brand and save then handleAddsubmit function will executed
-  const handleAddSubmit = async (event) => {
-    const newRow = {
-      brand: newBrand.toLocaleUpperCase(),
-    };
-    //////////////////////////////////////
-    event.preventDefault();
-    if (newBrand.trim() === "") {
-      setNewBrandError(true);
-    } else {
-      setNewBrandError(false);
-      if (
-        rows.find((p) => {
-          return (
-            p.brand.toLocaleLowerCase() === newRow.brand.toLocaleLowerCase()
-          );
-        })
-      ) {
-        alert(
-          "This Brand Name is already taken. Please choose a different name"
-        );
-      } else {
-        const response = await axios.post(`${apiUrl}`, newRow);
-        setRows([...rows, response.data]);
-        setOpenAddDialog(false);
-        setNewBrand("");
-      }
-    }
   };
 
+  // Edit handling Function
   const handleEditSubmit = async () => {
-    console.log(editingRow);
+    // console.log(editingRow);
     if (editingRow.brand === "") {
       alert("Name field cannot be left blank");
     } else if (
       rows.find((p) => {
         return (
-          p.brand.toLocaleLowerCase() ===
-          editingRow.brand.toLocaleLowerCase()
+          p.brand.toLocaleLowerCase() === editingRow.brand.toLocaleLowerCase()
         );
       })
     ) {
-      alert(
-        "This Brand Name is already taken. Please choose a different name"
-      );
+      alert("This Brand Name is already taken.");
     } else {
       const response = await axios.put(
         `${apiUrl}/${editingRow.id}`,
@@ -114,25 +87,23 @@ const Brand = () => {
 
       setEditingRow("");
       setRows(
-        rows.map((row) =>
-          row.id === response.data.id ? response.data : row
-        )
+        rows.map((row) => (row.id === response.data.id ? response.data : row))
       );
       alert("Updated Successfully");
     }
   };
-  const width1 = matches ? 120 : 340;
+
   const columns = [
     {
       field: "id",
-      headerName: "ID",
+      headerName: "Brand ID",
       headerStyle: { backgroundColor: "blue", color: "white" },
-      width: width1
+      width: width1,
     },
-    { field: "brand", headerName: "BRAND NAME", width: width1 },
+    { field: "brand", headerName: "Brand name", width: width1 },
     {
       field: "actions",
-      headerName: "ACTIONS",
+      headerName: "Actions",
       sortable: false,
       width: width1,
       renderCell: (params) => {
@@ -143,8 +114,6 @@ const Brand = () => {
           setUpdateDialog(true);
         };
         //When click edit button handleEditSubmit will executed
-
-
 
         return (
           <>
@@ -157,7 +126,6 @@ const Brand = () => {
               <EditIcon />
             </Button>
             {/* Update */}
-
           </>
         );
       },
@@ -170,17 +138,18 @@ const Brand = () => {
         <GridToolbarColumnsButton />
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
-        {/* <GridToolbarExport /> */}
       </GridToolbarContainer>
     );
   };
-  const handleBrandChange = (event) => {
-    setNewBrand(event.target.value);
-    //////////////////////////////////////////
-    const value = event.target.value;
-    setNewBrandError(value.trim() === "");
+
+  const fetchRow = (props) => {
+    setRows(props);
   };
-  const buttonplace = matches ? 0 : 16;
+  const editData=(props)=>
+  {
+    setRows(props);
+  }
+
   return (
     <>
       <Box m="20px">
@@ -193,7 +162,7 @@ const Brand = () => {
             style={{ background: "#A4A9FC" }}
             onClick={handleAddClick}
           >
-            NEW BRAND
+           New Brand
           </Button>
 
           <Box
@@ -232,9 +201,10 @@ const Brand = () => {
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
                 color: `${colors.blueAccent[300]} !important`,
               },
-              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
-                color: `white !important`,
-              }
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select":
+                {
+                  color: `white !important`,
+                },
             }}
           >
             <div
@@ -256,43 +226,15 @@ const Brand = () => {
             </div>
           </Box>
           {/* Add new Brand */}
-          <Dialog open={openAddDialog} onClose={handleAddClose}>
-            <DialogTitle style={{ height: "70px" }}>
-              <h2 style={{ marginBottom: "-10px" }}>Add New Brand</h2>
-            </DialogTitle>
-            <DialogContent>
-              <TextField
-                margin="dense"
-                label="ID Auto Generated"
-                type="text"
-                placeholder="Auto Generated"
-                fullWidth
-                disabled
-              />
-              <TextField
-                margin="dense"
-                label="Brand"
-                type="text"
-                fullWidth
-                value={newBrand}
-                onChange={handleBrandChange}
-                error={newBrandError}
-                helperText={newBrandError ? "Brand is required" : ""}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={handleAddSubmit}
-                variant="contained"
-                color="secondary"
-              >
-                Save
-              </Button>
-              <Button onClick={handleAddClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog>
+          <AddNewBrand
+            openAddDialog={openAddDialog}
+            postData={fetchRow}
+            tableRowData={rows}
+            handleAddClose={handleAddClose}
+          />
+
           {/* Edit Brand */}
-          <Dialog open={updateDialog} >
+          {/* <Dialog open={updateDialog} >
             <DialogTitle>
               <h2 style={{ marginBottom: "-10px" }}>Update Brand</h2>
             </DialogTitle>
@@ -315,7 +257,7 @@ const Brand = () => {
                 onChange={(e) =>
                   setEditingRow((prevRow) => ({
                     ...prevRow,
-                    brand: e.target.value,
+                    brand: e.target.value.toUpperCase(),
                   }))
                 }
                 inputRef={inputRef}
@@ -331,9 +273,14 @@ const Brand = () => {
               </Button>
               <Button onClick={handleAddClose}>Cancel</Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
+          <EditBrand 
+          updateDialog={updateDialog}
+          handleAddClose={handleAddClose}
+          tableRowData={rows}
+          editData={editingRow}
+           />
         </div>
-
       </Box>
     </>
   );
