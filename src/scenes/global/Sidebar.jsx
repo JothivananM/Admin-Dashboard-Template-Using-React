@@ -23,8 +23,8 @@ const Item = ({ title, to, icon, selected, setSelected ,setIsCollapsed }) => {
     <MenuItem
       active={isSelected}
       style={{
-        color: colors.grey[400],
-        // color: 'white',
+        // color: "#595959",
+        color: '#FC8019',
       }}
       onClick={() => {
         setSelected(title);
@@ -66,7 +66,7 @@ const Sidebar = (props) => {
       sx={{
         "& .pro-sidebar-inner": {
           // background: `#A4A9FC !important`,
-          background: `whitesmoke !important`,
+          background: `#30325E !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -75,13 +75,16 @@ const Sidebar = (props) => {
           padding: "5px 20px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: `${colors.grey[400]} !important`,
-          // color: `#A4A9FC !important`,
+          // color: `${colors.grey[400]} !important`,
+          color: `#FF8A00  !important`,
+          background: `white`,
         },
         "& .pro-menu-item.active": {
-          color: `${colors.grey[400]} !important`,
-          // background: 'white'
-          background: `#A4A9FC !important`,
+          // color: `${colors.grey[400]} !important`,
+          // color: 'white',
+          // background: `#FF8A00  !important`,
+          color: `#FF8A00  !important`,
+          background: `white`,
         },
         "& .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout ul": {
           height: "100vh !important"
@@ -105,8 +108,8 @@ const Sidebar = (props) => {
                 icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
                 style={{
                   margin: "12px 0 20px 0",
-                  borderBottom: "1px solid lightgray",
-                  color: colors.grey[400],
+                  // borderBottom: "1px solid lightgray",
+                  color: "#FF8A00",
                 }}
               >
                 {!isCollapsed && (

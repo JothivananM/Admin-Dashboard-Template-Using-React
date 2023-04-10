@@ -44,18 +44,17 @@ const Classification = () => {
   const [newClassification, setNewClassification] = useState("");
   const [pageSize, setPageSize] = useState(10);
   const [selectedvalue, setSelectedValue] = useState("");
-  const matches = useMediaQuery('(max-width:600px)');
+  const isFlex = useMediaQuery("(max-width:600px) or (max-width:850px)");
 
-  const width1 = matches ? 120 : 260;
   const columns = [
-    { field: "id", headerName: "Classification Id", width: width1 },
-    { field: "classification", headerName: "Classification Name", width: width1 },
-    { field: "category", headerName: "Category", width: width1 },
+    { field: "id", headerName: "Classification Id", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "classification", headerName: "Classification Name", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "category", headerName: "Category", width: 160, flex: isFlex ? 0 : 1 },
     {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: width1,
+      width: 300,
       renderCell: (params) => {
         const handleEdit = () => {
           console.log(`Edit row ${params.row.id}`);
@@ -77,8 +76,6 @@ const Classification = () => {
     },
   ];
 
-
-
   useEffect(() => {
     const fetchRows = async () => {
       const response = await axios.get(`${apiUrl}`);
@@ -96,6 +93,9 @@ const Classification = () => {
   };
 
   const handleAddSubmit = async () => {
+
+
+
     const newRow = {
       classification: newClassification,
       category: selectedvalue,
@@ -108,7 +108,6 @@ const Classification = () => {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   }
-  const buttonplace = matches ? 0 : 16;
   return (
     <>
       <Box m="20px">
@@ -117,9 +116,7 @@ const Classification = () => {
             size="small"
             startIcon={<AddBoxOutlined />}
             variant="contained"
-            color="primary"
-            sx={{ mb: 1, ml: buttonplace, fontSize: "14px" }}
-            style={{ background: "#A4A9FC", marginBottom: "10px" }}
+            style={{ background: "#30325E", marginBottom: "5px", fontSize: "16px" }}
             onClick={handleAddClick}
           >
             New Classification
@@ -127,40 +124,55 @@ const Classification = () => {
 
           <Box
             className="customMuiTable"
-            m={matches ? "10px 0 10px 0px" : "10px 0 10px 130px"}
-            height="75vh" width={matches ? "100%" : "80%"}
+            m="10px 0 10px 0"
+            height="70vh"
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
-                zIndex: 2,
                 border: "none",
+                boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
               },
               "& .MuiDataGrid-cell": {
-                borderBottom: "none",
+                // background: "white",
+                borderBottom: "1px solid lightgray",
               },
               "& .name-column--cell": {
-                color: colors.greenAccent[300],
+                color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: colors.blueAccent[700],
-                borderBottom: "none", color: "white"
+                color: "30325E",
+                fontSize: "16px",
+                backgroundColor: "white",
+                borderBottom: "1px solid #30325E",
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
               },
               "& .MuiDataGrid-footerContainer": {
-                borderTop: "none",
-                backgroundColor: colors.blueAccent[700],
+                backgroundColor: "white",
+                borderBottom: "none",
               },
               "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
+                color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.blueAccent[300]} !important`,
+                color: `#30325E`,
+                fontSize: "14px",
+
               },
               "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
-                color: `white !important`,
-              }
+                color: "#30325E !important",
+                fontSize: "14px !important"
+              },
+              "& .MuiDataGrid-row": {
+                background: "white",
+                cursor: "pointer"
+              },
+              "& .MuiDataGrid-row:hover": {
+                background: "whitesmoke",
+                cursor: "pointer"
+              },
+
             }}
           >
             <div
@@ -171,7 +183,7 @@ const Classification = () => {
                 rows={rows}
                 columns={columns}
                 componentsProps={{ toolbar: { csvOptions: { fields: ['postId', 'email'] } } }}
-                components={{ Toolbar: CustomToolbar }}
+                // components={{ Toolbar: CustomToolbar }}
                 rowsPerPageOptions={[10, 20]}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)} />
@@ -216,8 +228,20 @@ const Classification = () => {
             </DialogContent>
             <DialogActions>
 
-              <Button onClick={handleAddSubmit} variant="contained" color="secondary">Save</Button>
-              <Button onClick={handleAddClose} variant="outlined" color="secondary">Cancel</Button>
+              <Button
+                onClick={handleAddSubmit}
+                variant="contained"
+                style={{ background: "#30325E", fontSize: "13px" }}
+              >
+                Save
+              </Button>
+              <Button
+                onClick={handleAddClose}
+                variant='outlined'
+                style={{ border: "1px solid #30325E", fontSize: "14px", color: "#30325E" }}
+              >
+                Cancel
+              </Button>
             </DialogActions>
           </Dialog>
         </div>

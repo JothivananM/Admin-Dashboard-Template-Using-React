@@ -306,22 +306,6 @@ const NewAssetForm = (props) => {
                     </FormControl>
 
                   </Box>
-                  {/* <Box display="flex" justifyContent="end" mt="20px" gap={1}>
-<Button type="submit" color="secondary" variant='contained'>
-  Add Asset
-</Button>
-<Button type="submit" color="primary" variant='outlined'>
-  Cancel
-</Button>
-</Box> */}
-                  {/* <Button
-                    type='submit'
-                    color='secondary'
-                    variant='contained'>
-                    Save
-                  </Button> */}
-
-
 
                 </DialogContent>
 
@@ -329,12 +313,12 @@ const NewAssetForm = (props) => {
                   <Button
                     type="submit"
                     variant="contained"
-                    color="secondary">
+                    style={{ background: "#30325E", fontSize: "13px" }}>
                     Save
                   </Button>
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    style={{ border: "1px solid #30325E", fontSize: "13px", color:"#30325E" }}
                     onClick={props.closeDialog}
                   >
                     Cancel</Button>
@@ -374,6 +358,5 @@ const initialValues = {
   address2: "",
 };
 
-console.log();
 
 export default NewAssetForm;

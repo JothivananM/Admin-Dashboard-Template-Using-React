@@ -42,8 +42,8 @@ export default function AddNewBrand(props) {
             } else if (
               props.tableRowData.find(
                 (p) =>
-                  p.brand.toLocaleLowerCase() ===
-                  values.newBrand.toLocaleLowerCase()
+                  p.brand.trim().toLocaleLowerCase() ===
+                  values.newBrand.trim().toLocaleLowerCase()
               )
             ) {
               errors.newBrand =
@@ -79,12 +79,15 @@ export default function AddNewBrand(props) {
                 <Button
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                  style={{ background: "#30325E",fontSize: "14px" }}
                   onClick={handleSubmit}
                 >
                   Save
                 </Button>
-                <Button onClick={props.handleAddClose}>Cancel</Button>
+                <Button onClick={props.handleAddClose}
+                variant='outlined'
+                style={{ border: "1px solid #30325E", fontSize: "14px", color:"#30325E" }}
+                >Cancel</Button>
               </DialogActions>
             </Form>
           )}

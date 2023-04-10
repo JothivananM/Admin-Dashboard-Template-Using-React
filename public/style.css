@@ -16,3 +16,12 @@ input[type=file]::file-selector-button:hover {
 button {
     text-transform: capitalize !important;
 }
+
+.iconAccent {
+    color: #FF8A00;
+}
+
+.buttonAccent {
+    background-color: #30325E;
+}
+

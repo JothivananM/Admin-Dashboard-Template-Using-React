@@ -56,29 +56,22 @@ const AssetRequestList = () => {
   const [selectedRows, setSelectedRows] = useState({});
   const [openAcceptedDialog, setOpenAcceptedDialog] = useState(false);
   const navigate = useNavigate();
+  const isFlex = useMediaQuery("(max-width:600px) or (max-width:850px)");
 
   const columns = [
-    { field: "ID", headerName: "Request ID", width: 100 },
-    {
-      field: "Requestor",
-      headerName: "Requestor",
-      width: 100,
-    },
-    { field: "RequestDate", headerName: "Request Date", width: 100 },
-    { field: "AssetName", headerName: "Asset Name", width: 100 },
-    { field: "RequestType", headerName: "Request Type", width: 100 },
-    { field: "Reason", headerName: "Reason", width: 100 },
-    { field: "Status", headerName: "Status", width: 100 },
-    {
-      field: "AssetClassification",
-      headerName: "Asset Classification",
-      width: 150,
-    },
+    { field: "ID", headerName: "Request ID", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "Requestor", headerName: "Requestor", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "RequestDate", headerName: "Request Date", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "AssetName", headerName: "Asset Name", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "RequestType", headerName: "Request Type", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "Reason", headerName: "Reason", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "Status", headerName: "Status", width: 160, flex: isFlex ? 0 : 1 },
+    { field: "AssetClassification", headerName: "Asset Classification", width: 160, flex: isFlex ? 0 : 1 },
     {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: 150,
+      width: "200",
       renderCell: (params) => {
         const handleEdit = () => {
           console.log(`Edit row ${params.row.id}`);
@@ -166,7 +159,7 @@ const AssetRequestList = () => {
         <div style={{ height: 500 }}>
           <Button
             variant="contained"
-            style={{ background: "#A4A9FC" }}
+            style={{ background: "#30325E", marginBottom: "5px", fontSize: "16px" }}
             startIcon={<AddBoxOutlined />}
             onClick={handleAddClick}
           >
@@ -176,40 +169,54 @@ const AssetRequestList = () => {
           <Box
             className="customMuiTable"
             m="10px 0 10px 0"
-            height="75vh"
+            height="70vh"
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
                 border: "none",
+                boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
               },
               "& .MuiDataGrid-cell": {
-                borderBottom: "none",
+                // background: "white",
+                borderBottom: "1px solid lightgray",
               },
               "& .name-column--cell": {
                 color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
-                color: "white",
-                backgroundColor: colors.blueAccent[700],
-                borderBottom: "none",
+                color: "30325E",
+                fontSize: "16px",
+                backgroundColor: "white",
+                borderBottom: "1px solid #30325E",
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
               },
               "& .MuiDataGrid-footerContainer": {
-                borderTop: "none",
-                backgroundColor: colors.blueAccent[700],
-                color: "white",
+                backgroundColor: "white",
+                borderBottom: "none",
               },
               "& .MuiCheckbox-root": {
                 color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.blueAccent[300]} !important`,
+                color: `#30325E`,
+                fontSize: "14px",
+
               },
               "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
-                color: `white !important`,
-              }
+                color: "#30325E !important",
+                fontSize: "14px !important"
+              },
+              "& .MuiDataGrid-row": {
+                background: "white",
+                cursor: "pointer"
+              },
+              "& .MuiDataGrid-row:hover": {
+                background: "whitesmoke",
+                cursor: "pointer"
+              },
+
             }}
           >
             <div
@@ -423,10 +430,16 @@ const AssetRequestList = () => {
             </DialogContent>
 
             <DialogActions>
-              <Button variant="contained" onClick={handleAddSubmit}>
+              <Button
+                variant="contained"
+                style={{ background: "#30325E", fontSize: "13px" }}
+                onClick={handleAddSubmit}>
                 Save
               </Button>
-              <Button variant="outlined" onClick={handleAddClose}>
+              <Button
+                variant='outlined'
+                style={{ border: "1px solid #30325E", fontSize: "13px", color: "#30325E" }}
+                onClick={handleAddClose}>
                 Cancel
               </Button>
             </DialogActions>

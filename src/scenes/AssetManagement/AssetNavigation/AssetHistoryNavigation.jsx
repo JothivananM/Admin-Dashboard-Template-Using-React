@@ -22,8 +22,7 @@ export const AssetHistoryNavigation = () => {
 
             <Button
               variant="outlined"
-              color="secondary"
-              style={{ marginRight: "5px" }}
+              style={{ border: "1px solid #30325E", fontSize: "13px", color: "#30325E", marginRight: "5px" }}
             >
               Maintenance History
             </Button>
@@ -34,7 +33,7 @@ export const AssetHistoryNavigation = () => {
           }>
             <Button
               variant="outlined"
-              color="secondary"
+              style={{ border: "1px solid #30325E", fontSize: "13px", color: "#30325E", marginRight: "5px" }}
             >
               Assigned History
             </Button>

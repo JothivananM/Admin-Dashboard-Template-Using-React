@@ -37,10 +37,11 @@ const Brand = () => {
   const [editingRow, setEditingRow] = useState("null");
   const inputRef = useRef(null);
 
-  const matches = useMediaQuery("(max-width:600px)");
+  // const matches = useMediaQuery("(max-width:600px)");
+  const isFlex = useMediaQuery("(max-width:600px) or (max-width:850px)");
 
-  const width1 = matches ? 120 : 340;
-  const buttonplace = matches ? 0 : 16;
+  // const width1 = matches ? 120 : 340;
+  // const buttonplace = matches ? 0 : 16;
 
   useEffect(() => {
     const fetchRows = async () => {
@@ -51,7 +52,7 @@ const Brand = () => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-      console.log(inputRef.current.focus())
+      // console.log(inputRef.current.focus());
     };
     fetchRows();
   }, []);
@@ -65,47 +66,22 @@ const Brand = () => {
     setUpdateDialog(false);
   };
 
-  // Edit handling Function
-  const handleEditSubmit = async () => {
-    // console.log(editingRow);
-    if (editingRow.brand === "") {
-      alert("Name field cannot be left blank");
-    } else if (
-      rows.find((p) => {
-        return (
-          p.brand.toLocaleLowerCase() === editingRow.brand.toLocaleLowerCase()
-        );
-      })
-    ) {
-      alert("This Brand Name is already taken.");
-    } else {
-      const response = await axios.put(
-        `${apiUrl}/${editingRow.id}`,
-        editingRow
-      );
-      setUpdateDialog(false);
 
-      setEditingRow("");
-      setRows(
-        rows.map((row) => (row.id === response.data.id ? response.data : row))
-      );
-      alert("Updated Successfully");
-    }
-  };
 
   const columns = [
     {
       field: "id",
       headerName: "Brand ID",
       headerStyle: { backgroundColor: "blue", color: "white" },
-      width: width1,
+      width: 160, flex: isFlex ? 0 : 1
+
     },
-    { field: "brand", headerName: "Brand name", width: width1 },
+    { field: "brand", headerName: "Brand Name", width: 160, flex: isFlex ? 0 : 1 },
     {
       field: "actions",
       headerName: "Actions",
       sortable: false,
-      width: width1,
+      width: 160, flex: isFlex ? 0 : 1,
       renderCell: (params) => {
         const handleEdit = () => {
           // console.log(`Edit row ${params.row.id}`);
@@ -113,19 +89,17 @@ const Brand = () => {
           setEditingRow(params.row);
           setUpdateDialog(true);
         };
-        //When click edit button handleEditSubmit will executed
 
         return (
           <>
             <Button
               color="primary"
-              style={{ color: "#6870fa" }}
+              style={{ color: "#30325E" }}
               size="small"
               onClick={handleEdit}
             >
               <EditIcon />
             </Button>
-            {/* Update */}
           </>
         );
       },
@@ -145,10 +119,9 @@ const Brand = () => {
   const fetchRow = (props) => {
     setRows(props);
   };
-  const editData=(props)=>
-  {
+  const editData = (props) => {
     setRows(props);
-  }
+  };
 
   return (
     <>
@@ -156,67 +129,80 @@ const Brand = () => {
         <div style={{ height: 500 }}>
           <Button
             variant="contained"
-            size="small"
             startIcon={<AddBoxOutlined />}
-            sx={{ mb: 1, ml: buttonplace, fontSize: "14px" }}
-            style={{ background: "#A4A9FC" }}
+            // sx={{ mb: 1, ml: buttonplace, fontSize: "14px" }}
+            sx={{ mb: 1, fontSize: "14px" }}
+            style={{ background: "#30325E", marginBottom: "5px", fontSize: "16px" }}
+
             onClick={handleAddClick}
           >
-           New Brand
+            New Brand
           </Button>
 
           <Box
             className="customMuiTable"
-            m={matches ? "10px 0 10px 0px" : "10px 0 10px 130px"}
+            m="10px 0 10px 0"
             height="75vh"
-            width={matches ? "100%" : "80%"}
             sx={{
               "& .MuiDataGrid-root": {
                 position: "relative",
-                zIndex: 2,
                 border: "none",
+                boxShadow: "rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset",
               },
               "& .MuiDataGrid-cell": {
-                borderBottom: "none",
+                // background: "white",
+                borderBottom: "1px solid lightgray",
               },
               "& .name-column--cell": {
-                color: colors.greenAccent[300],
+                color: colors.greenAccent[900],
               },
               "& .MuiDataGrid-columnHeaders": {
-                backgroundColor: colors.blueAccent[700],
-                borderBottom: "none",
-                color: "white",
-                fontSize: "13px",
+                color: "30325E",
+                fontSize: "16px",
+                backgroundColor: "white",
+                borderBottom: "1px solid #30325E",
               },
               "& .MuiDataGrid-virtualScroller": {
                 backgroundColor: colors.primary[400],
               },
               "& .MuiDataGrid-footerContainer": {
-                borderTop: "none",
-                backgroundColor: colors.blueAccent[700],
+                backgroundColor: "white",
+                borderBottom: "none",
               },
               "& .MuiCheckbox-root": {
-                color: `${colors.greenAccent[200]} !important`,
+                color: `${colors.greenAccent[500]} !important`,
               },
               "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                color: `${colors.blueAccent[300]} !important`,
+                color: `#30325E`,
+                fontSize: "14px",
+
               },
-              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select":
-                {
-                  color: `white !important`,
-                },
+              "& .MuiTablePagination-selectLabel ,.css-1hgjne-MuiButtonBase-root-MuiIconButton-root, .css-7ms3qr-MuiTablePagination-displayedRows, .css-oatl8s-MuiSvgIcon-root-MuiSelect-icon, .css-baf1rs-MuiInputBase-root-MuiTablePagination-select": {
+                color: "#30325E !important",
+                fontSize: "14px !important"
+              },
+              "& .MuiDataGrid-row" : {
+                background: "white",
+                cursor: "pointer"
+              },
+              "& .MuiDataGrid-row:hover" : {
+                background: "whitesmoke",
+                cursor: "pointer"
+              },
+
             }}
           >
             <div
               style={{ height: 580, width: "100%", position: "sticky", top: 0 }}
             >
               <DataGrid
+                style={{ background: "#fcfcfc" }}
                 rows={rows}
                 columns={columns}
                 componentsProps={{
                   toolbar: { csvOptions: { fields: ["postId", "email"] } },
                 }}
-                components={{ Toolbar: CustomToolbar }}
+                // components={{ Toolbar: CustomToolbar }}
                 rowsPerPageOptions={[10, 20]}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -226,60 +212,22 @@ const Brand = () => {
             </div>
           </Box>
           {/* Add new Brand */}
-          <AddNewBrand
+         {openAddDialog &&( <AddNewBrand
             openAddDialog={openAddDialog}
             postData={fetchRow}
             tableRowData={rows}
             handleAddClose={handleAddClose}
-          />
+          />)}
 
           {/* Edit Brand */}
-          {/* <Dialog open={updateDialog} >
-            <DialogTitle>
-              <h2 style={{ marginBottom: "-10px" }}>Update Brand</h2>
-            </DialogTitle>
-            <DialogContent>
-              <TextField
-                margin="dense"
-                label="ID Auto Generated"
-                type="text"
-                value={editingRow.id}
-                fullWidth
-                disabled
-              />
-              <TextField
-                autofocus
-                margin="dense"
-                label="Brand"
-                type="text"
-                fullWidth
-                defaultValue={editingRow.brand}
-                onChange={(e) =>
-                  setEditingRow((prevRow) => ({
-                    ...prevRow,
-                    brand: e.target.value.toUpperCase(),
-                  }))
-                }
-                inputRef={inputRef}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleEditSubmit}
-              >
-                Update
-              </Button>
-              <Button onClick={handleAddClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog> */}
-          <EditBrand 
-          updateDialog={updateDialog}
-          handleAddClose={handleAddClose}
-          tableRowData={rows}
-          editData={editingRow}
-           />
+
+         {updateDialog && (<EditBrand
+            openUpdateDialog={updateDialog}
+            tableRowsData={rows}
+            editingRow={editingRow}
+            handleAddClose={handleAddClose}
+            editData={editData}
+          />) }
         </div>
       </Box>
     </>

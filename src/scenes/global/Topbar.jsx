@@ -60,13 +60,13 @@ const Topbar = (props) => {
             )}
           </IconButton> */}
           <IconButton>
-            <NotificationsOutlinedIcon />
+            <NotificationsOutlinedIcon  style={{color:"#30325E"}}/>
           </IconButton>
           {/* <IconButton>
             <SettingsOutlinedIcon />
           </IconButton> */}
           <IconButton>
-            <PersonOutlinedIcon />
+            <PersonOutlinedIcon  style={{color:"#30325E"}}/>
           </IconButton>
         </Box>
       </Box>

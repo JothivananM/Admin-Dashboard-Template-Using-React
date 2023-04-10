@@ -23,9 +23,7 @@ export const UserDashboardNavigation = () => {
                     >
                         <Button
                             variant="outlined"
-                            color="secondary"
-                            style={{ marginBottom: "10px" }}
-
+                            style={{ border: "1px solid #30325E", fontSize: "13px", color: "#30325E", marginRight: "5px" }}
                         >
                             Assigned Assets
                         </Button>
@@ -37,11 +35,9 @@ export const UserDashboardNavigation = () => {
                     }>
                         <Button
                             variant="outlined"
-                            color="secondary"
-                            style={{ marginBottom: "10px" }}
-
+                            style={{ border: "1px solid #30325E", fontSize: "13px", color: "#30325E", marginRight: "5px" }}
                         >
-                            Assigned Asset History
+                            Assigned Assets History
                         </Button>
                     </NavLink>
 
